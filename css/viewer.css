@@ -77,9 +77,10 @@ body {
 
 #videoTabsDiv{
 	width: 100%;
-	height: 150px;
+	height: 140px;
 	background-color: #464646;
-	display:flex;align-items:center;
+	display: flex;
+	align-items: flex-end;
 }
 
 .videoTab{
@@ -91,6 +92,8 @@ body {
 
 .videoTab:hover{
 	background-color: #ffa811;
+	width: 96px;
+	height: 128px;
 }
 
 ul.videoImages {
