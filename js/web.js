@@ -15,8 +15,7 @@ function button(){
 }
 
 function switchVideo(){
-	//$('#currentVideo').attr("src", "/videos/SpaceOddity.mp4");
-	$('#currentVideo').attr("src", "/Users/Adam/Dropbox/Code/Test/vidtest2.mp4");
+	//$('#currentVideo').attr("src", "/Videos/SpaceOddity.mp4");
 }
 
 
