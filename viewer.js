@@ -15,7 +15,9 @@ var path = require("path");
 // server host and port
 var PORT = 1337; //40143?
 //var HOST = '127.0.0.1';
-var HOST = '10.26.67.68';
+var HOST = '10.26.67.64';
+
+var videoDirectory = "./Videos/";
 
 // for referencing files
 app.use('/css', express.static('css'));
@@ -25,6 +27,7 @@ app.use('/Videos', express.static('videos'));
 
 // websocket
 io.on('connection', function(socket){
+    getVideoList();
     socket.on('loadMessages', function(){
         io.emit('setMessage', "Socket.io test successful.");
     });
@@ -42,4 +45,20 @@ http.listen(PORT, HOST, function(){
 });
 
 
+function getVideoList(){
+    var files = fs.readdirSync(videoDirectory);
+    var videoList = [];
+    for (var i in files) {
+        if (files.hasOwnProperty(i)) {//jQuery check
+            var video = {
+                "name": files[i].split(".")[0],
+                "filename": files[i]
+            };
+            videoList.push(video);
+            console.log("Video[" + i + "]: " + JSON.stringify(video, null, 2));
+        }
+    }
+
+    io.emit('videos', videoList);
+}
 
