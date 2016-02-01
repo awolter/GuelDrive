@@ -21,8 +21,7 @@ var HOST = '10.26.67.68';
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
 app.use('/js', express.static('js'));
-app.use('/videos', express.static('videos'));
-app.use('/Volumes/AMAZON', express.static('Volumes/AMAZON')); // (Doesn't work)
+app.use('/Videos', express.static('videos'));
 
 // websocket
 io.on('connection', function(socket){
