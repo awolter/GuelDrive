@@ -20,6 +20,7 @@ function printVideos(){
 	}
 }
 
+/*
 // generates buttons with each video name
 function generateButtons(){
 	var videoSelector = $("#videoSelector");
@@ -44,7 +45,7 @@ function generateButtons(){
 				video.pause();
 		}
 	});
-}
+} */
 
 // generates tabs with each video name + image
 function generateTabs(){
@@ -64,30 +65,6 @@ function generateTabs(){
 
 }
 
-
-/* Find a better way to find the image
-function findImage(name){
-	// check if png exists
-	if(imageExists(name + ".png")){
-		return name + ".png";
-	}
-	// check if jpg exists
-	if(imageExists(name + ".jpg")){
-		return name + ".jpg";
-	}
-	// check if gif exists
-	if(imageExists(name + ".gif")){
-		return name + ".gif";
-	}
-}
-
-function imageExists(filename)
-{
-	var img = new Image();
-	img.src = coversDirectory + filename;
-	return img.height != 0;
-}
-*/
 
 // switches the video player to the i-th video
 function switchVideo(i){
@@ -123,6 +100,7 @@ $(document).ready(function(){
 		generateTabs();
 	});
 
+	// if space is pressed, it pauses/starts the current video
 	$(document).on('keydown',function(e){
 		var target = $(e.target);
 		if(e.keyCode == 32 && !target.is('input,[contenteditable="true"],textarea')) { //If space is pressed outside a text field

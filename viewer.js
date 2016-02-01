@@ -22,7 +22,7 @@ var videoDirectory = "./Videos/";
 // for referencing files
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
-app.use('/Covers', express.static('Covers'));
+app.use('/Covers', express.static('covers'));
 app.use('/js', express.static('js'));
 app.use('/Videos', express.static('videos'));
 
