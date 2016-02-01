@@ -22,6 +22,7 @@ var videoDirectory = "./Videos/";
 // for referencing files
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
+app.use('/Covers', express.static('Covers'));
 app.use('/js', express.static('js'));
 app.use('/Videos', express.static('videos'));
 
@@ -54,10 +55,11 @@ function getVideoList(){
     var files = fs.readdirSync(videoDirectory);
     var videoList = [];
     for (var i in files) {
-        if (files.hasOwnProperty(i) && validFileType(files[i].split(".")[1])) {//jQuery check
+        if (files.hasOwnProperty(i) && validMovieFileType(files[i].split(".")[1])) {//jQuery check
             var video = {
                 "name": files[i].split(".")[0],
-                "filename": files[i]
+                "filename": files[i],
+                "imageType": ".jpg"
             };
             videoList.push(video);
             console.log("Video[" + i + "]: " + JSON.stringify(video, null, 2));
@@ -68,7 +70,7 @@ function getVideoList(){
 }
 
 // test if a filetype is valid
-function validFileType(S){
+function validMovieFileType(S){
     var s = S.toLowerCase();
     if(s == "mkv" || s == "mp4" || s == "avi"){
         return true;

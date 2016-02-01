@@ -7,6 +7,7 @@ var socket = io();
 socket.emit('loadMessages');
 
 var videoDirectory = "./Videos/";
+var coversDirectory = "./Covers/";
 var videos = [];
 
 
@@ -17,6 +18,7 @@ function printVideos(){
 	}
 }
 
+/*
 // generates buttons with each video name
 function generateButtons(){
 
@@ -30,12 +32,60 @@ function generateButtons(){
 			$("#videoSelector").append(button);
 		}
 	}
+} */
+
+// generates tabs with each video name + image
+function generateTabs(){
+
+	// reset list (needed for multiple viewers at the same time!)
+	$("#videoTabList").html("");
+
+
+	for(var i in videos){
+		if (videos.hasOwnProperty(i)) { //jQuery check
+
+			var tab = $("<li><img src='" + coversDirectory + videos[i].name + videos[i].imageType + "' class='videoTab' onclick='switchVideo(" + i + ")' /></li>");
+
+			$("#videoTabList").append(tab);
+		}
+	}
+
 }
 
+/* Find a better way to find the image
+function findImage(name){
+	// check if png exists
+	if(imageExists(name + ".png")){
+		return name + ".png";
+	}
+	// check if jpg exists
+	if(imageExists(name + ".jpg")){
+		return name + ".jpg";
+	}
+	// check if gif exists
+	if(imageExists(name + ".gif")){
+		return name + ".gif";
+	}
+}
+
+function imageExists(filename)
+{
+	var img = new Image();
+	img.src = coversDirectory + filename;
+	return img.height != 0;
+}
+*/
 
 // switches the video player to the i-th video
 function switchVideo(i){
-	$('#currentVideo').attr("src", videoDirectory + videos[i].filename);
+
+	// check that the i is a valid video
+	if(i < videos.length){
+		$('#currentVideo').attr("src", videoDirectory + videos[i].filename);
+	}
+	else{
+		console.warn("Invalid switch attempt!");
+	}
 }
 
 
@@ -53,7 +103,8 @@ $(document).ready(function(){
 		// set the videos list
 		videos = videoList;
 		printVideos();
-		generateButtons();
+		//generateButtons();
+		generateTabs();
 	});
 	
 });
