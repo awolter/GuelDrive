@@ -15,7 +15,7 @@ var path = require("path");
 // server host and port
 var PORT = 1337; //40143?
 //var HOST = '127.0.0.1';
-var HOST = '192.168.1.100';
+var HOST = '192.168.1.138';
 
 var videoDirectory = "./Videos/";
 

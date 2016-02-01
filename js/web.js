@@ -92,6 +92,9 @@ function imageExists(filename)
 // switches the video player to the i-th video
 function switchVideo(i){
 
+	// clear the video message
+	$('#videoMessage').html("");
+
 	// check that the i is a valid video
 	if(i < videos.length){
 		$('#currentVideo').attr("src", videoDirectory + videos[i].filename);
