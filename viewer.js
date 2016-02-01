@@ -29,11 +29,6 @@ io.on('connection', function(socket){
     socket.on('loadMessages', function(){
         io.emit('setMessage', "Socket.io test successful.");
     });
-
-    socket.on('print', function(){
-        console.log(vidStreamer);
-    })
-
 });
 
 // load webpage

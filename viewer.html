@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>607 VidShare</title>
+    <title>GuelDrive Media Server</title>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/viewer.css">
@@ -15,15 +15,15 @@
 <body>
 
 <div id='videoPlayer'>
-    <!--<video id='currentVideo' src="/videos/SW7.mkv" controls></video> -->
-    <video id='currentVideo' src="/Volumes/AMAZON/vid_test.mp4" controls></video>
+    <video id='currentVideo' src="/videos/SW7.mkv" controls></video>
+    <!-- <video id='currentVideo' src="/Volumes/AMAZON/vid_test.mp4" controls></video> -->
 </div>
 
-<input type='button' id='switchButton' onclick='switchVideo()'>
+<input type='button' class='switchButton' onclick='switchVideo(0)'>
+<input type='button' class='switchButton' onclick='switchVideo(1)'>
+<input type='button' class='switchButton' onclick='switchVideo(2)'>
 
 
-</form>
 </body>
-<script type="text/javascript" src="js/dygraph-combined.js"></script>
 <script src="js/web.js" type="text/javascript"></script>
 </html>
