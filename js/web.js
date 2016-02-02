@@ -20,32 +20,6 @@ function printVideos(){
 	}
 }
 
-/*
-// generates buttons with each video name
-function generateButtons(){
-	var videoSelector = $("#videoSelector");
-	// reset list (needed for multiple viewers at the same time!)
-	vidSelector.html("");
-
-	for(var i in videos){
-		if (videos.hasOwnProperty(i)) { //jQuery check
-			//console.log("Video Name: " + videos[i].name);
-			var button = $("<input type='button' value = '" + videos[i].name + "' onclick='switchVideo(" + i + ")'>");
-			videoSelector.append(button);
-		}
-	}
-	//Prevents spacebar from restarting the currently playing video
-	videoSelector.on('keydown', function(e){
-		if(e.keyCode == 32){
-			e.preventDefault();
-			var video= $('#currentVideo')[0];//[0] needed to get the HTML DOM Element
-			if (video.paused)
-				video.play();
-			else
-				video.pause();
-		}
-	});
-} */
 
 // generates tabs with each video name + image
 function generateTabs(){
