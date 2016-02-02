@@ -23,9 +23,9 @@ function printVideos(){
 
 // generates tabs with each video name + image
 function generateTabs(){
-
+	var videoTabList = $('#videoTabList');
 	// reset list (needed for multiple viewers at the same time!)
-	$("#videoTabList").html("");
+	videoTabList.html("");
 
 
 	for(var i in videos){
@@ -39,7 +39,7 @@ function generateTabs(){
 			tab += "</label></li>";
 
 
-			$("#videoTabList").append(tab);
+			videoTabList.append(tab);
 		}
 	}
 
@@ -50,7 +50,7 @@ function generateTabs(){
 function switchVideo(i){
 
 	// clear the video message
-	$('#videoMessage').html("");
+	$('#videoMessage').hide();
 
 	// check that the i is a valid video
 	if(i < videos.length){
