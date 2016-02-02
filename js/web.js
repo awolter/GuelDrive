@@ -57,7 +57,13 @@ function generateTabs(){
 	for(var i in videos){
 		if (videos.hasOwnProperty(i)) { //jQuery check
 
-			var tab = $("<li><img src='" + coversDirectory + videos[i].name + videos[i].imageType + "' class='videoTab' onclick='switchVideo(" + i + ")' /></li>");
+			var tab  = "";
+
+			tab += "<li><label for='videoTab" + i + "' title='" + videos[i].name + "'>";
+			tab += "<img src='" + coversDirectory + videos[i].name + videos[i].imageType;
+			tab += "' id='videoTab" + i + "' class='videoTab' onclick='switchVideo(" + i + ")' />";
+			tab += "</label></li>";
+
 
 			$("#videoTabList").append(tab);
 		}
