@@ -7,6 +7,8 @@ var socket = io();
 socket.emit('loadMessages');
 
 var videoDirectory = "./Videos/";
+//var videoDirectory = "./Volumes/WD/Movies/DL/";
+
 var coversDirectory = "./Covers/";
 var videos = [];
 
