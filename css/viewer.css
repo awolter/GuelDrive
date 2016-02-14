@@ -54,7 +54,19 @@ body {
 }
 
 #mediaTypeSelector > img{
+	border-color: transparent;
+	border-style: solid;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 	height: 25px;
+}
+
+.mediaTypeTabSelected{
+	background: #1a1a1a;
+}
+
+.mediaTypeTabUnselected:hover{
+	background: #2d2d2d;
 }
 
 

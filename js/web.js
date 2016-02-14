@@ -67,16 +67,16 @@ function switchVideo(i){
 function switchMediaType(i){
 	// movies
 	if(i == 0){
-		// switch the images
-		$('#moviesTabImg').attr("src", imagesDirectory + "MoviesSelected.png");
-		$('#tvShowsTabImg').attr("src", imagesDirectory + "TVShows.png");
+		// switch classes
+		document.getElementById("moviesTabImg").className = "mediaTypeTabSelected";
+		document.getElementById("tvShowsTabImg").className = "mediaTypeTabUnselected";
 		// TODO: Switch the page to Movies
 	}
 	// tv shows
 	else if(i == 1){
-		// switch the images
-		$('#moviesTabImg').attr("src", imagesDirectory + "Movies.png");
-		$('#tvShowsTabImg').attr("src", imagesDirectory + "TVShowsSelected.png");
+		// switch classes
+		document.getElementById("moviesTabImg").className = "mediaTypeTabUnselected";
+		document.getElementById("tvShowsTabImg").className = "mediaTypeTabSelected";
 		// TODO: Switch the pages to TV shows
 	}
 	else{
