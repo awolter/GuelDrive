@@ -41,6 +41,16 @@ body {
 	line-height: 100px;
 }
 
+#mediaTypeSelector{
+	position: fixed;
+	top: 0;
+	left: 5;
+}
+
+#mediaTypeSelector > img{
+	height: 25px;
+}
+
 
 /* Video Player */
 

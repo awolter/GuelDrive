@@ -7,8 +7,8 @@ var socket = io();
 socket.emit('loadMessages');
 
 var videoDirectory = "./Videos/";
-//var videoDirectory = "./Volumes/WD/Movies/DL/";
-
+//var videoDirectory = "./Volumes/WD/Movies/mp4/";
+var imagesDirectory = "./images/";
 var coversDirectory = "./Covers/";
 var videos = [];
 
@@ -59,10 +59,31 @@ function switchVideo(i){
 		$('#currentVideo').attr("src", videoDirectory + videos[i].filename);
 	}
 	else{
-		console.warn("Invalid switch attempt!");
+		console.warn("Invalid movie switch attempt!");
 	}
 }
 
+// switch the media type (0 is movies, 1 is tv shows)
+function switchMediaType(i){
+	// movies
+	if(i == 0){
+		// switch the images
+		$('#moviesTabImg').attr("src", imagesDirectory + "MoviesSelected.png");
+		$('#tvShowsTabImg').attr("src", imagesDirectory + "TVShows.png");
+		// TODO: Switch the page to Movies
+	}
+	// tv shows
+	else if(i == 1){
+		// switch the images
+		$('#moviesTabImg').attr("src", imagesDirectory + "Movies.png");
+		$('#tvShowsTabImg').attr("src", imagesDirectory + "TVShowsSelected.png");
+		// TODO: Switch the pages to TV shows
+	}
+	else{
+		console.warn("Invalid Media Switch Attempt!");
+	}
+
+}
 
 $(document).ready(function(){
 	

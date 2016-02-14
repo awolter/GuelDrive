@@ -18,7 +18,7 @@ var PORT = 1337; //40143?
 var HOST = '192.168.1.138';
 
 var videoDirectory = "./Videos/";
-//var videoDirectory = "./Volumes/WD/Movies/DL/";
+//var videoDirectory = "./Volumes/WD/Movies/mp4/";
 
 // for referencing files
 app.use('/css', express.static('css'));
@@ -26,7 +26,7 @@ app.use('/images', express.static('images'));
 app.use('/Covers', express.static('covers'));
 app.use('/js', express.static('js'));
 app.use('/Videos', express.static('videos'));
-app.use('/Volumes/WD/Movies/DL', express.static('Volumes/WD/Movies/DL'));
+//app.use('/Volumes/WD/Movies/mp4', express.static('Volumes/WD/Movies/mp4'));
 
 // websocket
 io.on('connection', function(socket){
@@ -96,7 +96,7 @@ function validMovieFileType(FILETYPE){
     if(FILETYPE == null){ return false; }
 
     var s = FILETYPE.toLowerCase();
-    if(s == "mkv" || s == "mp4" || s == "avi"){
+    if(s == "mkv" || s == "mp4" || s == "avi" || s == "m4v"){
         return true;
     }else{
         console.log("Invalid File Type: " + s);
