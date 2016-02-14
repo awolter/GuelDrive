@@ -18,6 +18,9 @@ var PORT = 1337; //40143?
 var HOST = '192.168.1.138';
 
 var videoDirectory = "./Videos/";
+var moviesFolder = "Movies/";
+var tvShowsFolder = "TVShows/";
+
 //var videoDirectory = "./Volumes/WD/Movies/mp4/";
 
 // for referencing files
@@ -31,9 +34,10 @@ app.use('/Videos', express.static('videos'));
 // websocket
 io.on('connection', function(socket){
 
-    // get the list of videos in the /Videos/ directory
-    getVideoList();
-
+    // get the list of movies and send them to the web client(s)
+    getMovieList();
+    // get the list of tv shows and send them to the web client(s)
+    getTVShowList();
 
     // for testing
     socket.on('loadMessages', function(){
@@ -53,53 +57,126 @@ http.listen(PORT, HOST, function(){
 });
 
 // creates video objects, creates a list, and sends to client
-function getVideoList(){
-    var files = fs.readdirSync(videoDirectory);
-    var videoList = [];
-    for (var i in files) {
-        if (files.hasOwnProperty(i)) {//jQuery check
+function getMovieList(){
+    var files = fs.readdirSync(videoDirectory + moviesFolder);
+    var movieList = [];
+    for(var i in files){
+        if(files.hasOwnProperty(i)){ //jQuery check
 
-            // split the array
-            var fileStringArr = files[i].split(".");
-
-            // create the video name
-            var fileName = "";
-            for(var j = 0; j < fileStringArr.length - 1; j++){
-                fileName += fileStringArr[j];
-                if(j < fileStringArr.length - 2){
-                    fileName += ".";
-                }
-            }
+            // get the file name without extension
+            var fileName = removeFileExtension(files[i]);
 
             // create & test the filetype
-            var fileType = fileStringArr[j];
-            if (validMovieFileType(fileType)){
+            var fileType = getFileExtension(files[i]);
 
-                // create video object
-                var video = {
+            if(validVideoFileExtension(fileType)){
+
+                // create movie object
+                var movie = {
                     "name": fileName,
                     "filename": files[i],
                     "imageType": ".jpg"
                 };
-                videoList.push(video);
-                console.log("Video[" + i + "]: " + JSON.stringify(video, null, 2));
+                movieList.push(movie);
+                //console.log("Movie[" + i + "]: " + JSON.stringify(movie, null, 2));
             }
         }
     }
+    console.log("Number of movies loaded: " + movieList.length);
+    io.emit('setMovies', movieList);
+}
 
-    io.emit('videos', videoList);
+function getTVShowList(){
+    // counter for number of episodes
+    var count = 0;
+
+    var tvShows = [];
+
+    // iterate through the shows
+    var shows = fs.readdirSync(videoDirectory + tvShowsFolder);
+    for(var i in shows){
+        if(shows.hasOwnProperty(i)){ //jQuery check
+
+            // add show to list
+            var show = {
+                "name" : shows[i],
+                "imageType" : ".jpg"
+            };
+            show.seasons = [];
+
+            // iterate through the seasons
+            var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/");
+            for(var j in seasons) {
+                if (seasons.hasOwnProperty(j)) { //jQuery check
+
+                    // add season to seasons list
+                    var season = {
+                        "name": seasons[j]
+                    };
+                    season.episodes = [];
+
+                    // iterate through the episodes
+                    var episodes = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/" + seasons[j] + "/");
+                    for (var k in episodes) {
+                        if (episodes.hasOwnProperty(i)) {
+                            if (validVideoFileExtension(getFileExtension(episodes[k]))) {
+
+                                // add episode to episodes list
+                                var episode = {
+                                    "name": episodes[k],
+                                    "fileType": getFileExtension(episodes[k])
+                                };
+                                count++;
+                                season.episodes.push(episode);
+                            }
+                        }
+                    }
+                    show.seasons.push(season);
+                }
+            }
+            tvShows.push(show);
+        }
+    }
+    console.log(JSON.stringify(tvShows,null,2));
+    console.log("Number of TV Show episodes loaded: " + count);
+    io.emit('setTVShows', tvShows);
+}
+
+// parses the file extension from a full file name
+function getFileExtension(file){
+
+    var fileArr = file.split(".");
+
+    return fileArr[fileArr.length-1];
+}
+
+// removes the file extension from a full file name
+function removeFileExtension(file){
+    // split the file name by period
+    var fileArr = file.split(".");
+
+    var fileName = "";
+    for(var j = 0; j < fileArr.length - 1; j++){
+        fileName += fileArr[j];
+        if(j < fileArr.length - 2){
+            fileName += ".";
+        }
+    }
+
+    return fileName;
 }
 
 // test if a filetype is valid
-function validMovieFileType(FILETYPE){
-    console.log("FILE TYPE: " + FILETYPE);
-    if(FILETYPE == null){ return false; }
+function validVideoFileExtension(ex){
 
-    var s = FILETYPE.toLowerCase();
+    if(ex == null){ return false; }
+
+    var s = ex.toLowerCase();
     if(s == "mkv" || s == "mp4" || s == "avi" || s == "m4v"){
+        //console.log("FILE TYPE: " + ex);
         return true;
     }else{
-        console.log("Invalid File Type: " + s);
+        //console.log("Invalid File Type: " + s);
     }
     return false;
 }

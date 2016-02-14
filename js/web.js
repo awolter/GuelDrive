@@ -7,61 +7,62 @@ var socket = io();
 socket.emit('loadMessages');
 
 var videoDirectory = "./Videos/";
+var moviesFolder = "Movies/";
 //var videoDirectory = "./Volumes/WD/Movies/mp4/";
-var imagesDirectory = "./images/";
 var coversDirectory = "./Covers/";
-var videos = [];
+var movies = [];
 
 
-// testing function for current videos object
-function printVideos(){
-	for(var i in videos){
-		if (videos.hasOwnProperty(i)) { //jQuery check
-			console.log("Video #" + i + ": " + videos[i].name + ", filename: " + videos[i].filename);
+// testing function for current movies object
+function printMovies(){
+	for(var i in movies){
+		if (movies.hasOwnProperty(i)) { //jQuery check
+			console.log("Movie #" + i + ": " + movies[i].name + ", filename: " + movies[i].filename);
 		}
 	}
 }
 
 
-// generates tabs with each video name + image
+// generates tabs with each movie name + image
 function generateTabs(){
-	var videoTabList = $('#videoTabList');
+	var movieTabList = $('#movieTabList');
 	// reset list (needed for multiple viewers at the same time!)
-	videoTabList.html("");
+	movieTabList.html("");
 
 
-	for(var i in videos){
-		if (videos.hasOwnProperty(i)) { //jQuery check
+	for(var i in movies){
+		if (movies.hasOwnProperty(i)) { //jQuery check
 
 			var tab  = "";
 
-			tab += "<li><label for='videoTab" + i + "' title='" + videos[i].name + "'>";
-			tab += "<img src='" + coversDirectory + videos[i].name + videos[i].imageType;
-			tab += "' id='videoTab" + i + "' class='videoTab' onclick='switchVideo(" + i + ")' />";
+			tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
+			tab += "<img src='" + coversDirectory + movies[i].name + movies[i].imageType;
+			tab += "' id='movieTab" + i + "' class='movieTab' onclick='switchMovie(" + i + ")' />";
 			tab += "</label></li>";
 
 
-			videoTabList.append(tab);
+			movieTabList.append(tab);
 		}
 	}
 
 }
 
 
-// switches the video player to the i-th video
-function switchVideo(i){
-
-	// clear the video message
+// switches the movie player to the i-th movie
+function switchMovie(i){
+	console.log("TEST");
+	// clear the movie message
 	$('#videoMessage').hide();
 
-	// check that the i is a valid video
-	if(i < videos.length){
-		$('#currentVideo').attr("src", videoDirectory + videos[i].filename);
+	// check that the i is a valid movie
+	if(i < movies.length){
+		$('#currentVideo').attr("src", videoDirectory + moviesFolder + movies[i].filename);
 	}
 	else{
 		console.warn("Invalid movie switch attempt!");
 	}
 }
+
 
 // switch the media type (0 is movies, 1 is tv shows)
 function switchMediaType(i){
@@ -85,20 +86,21 @@ function switchMediaType(i){
 
 }
 
+
 $(document).ready(function(){
 	
 	socket.on('setMessage', function(msg){
 		console.log(msg);
 	});
 
-	// populate the videos list
-	socket.on('videos', function(videoList){
-		// reset the videos list (needed for multiple viewers at the same time!)
-		videos.length = 0;
-		printVideos();
-		// set the videos list
-		videos = videoList;
-		printVideos();
+	// populate the movies list
+	socket.on('setMovies', function(movieList){
+		// reset the movies list (needed for multiple viewers at the same time!)
+		movies.length = 0;
+		printMovies();
+		// set the movies list
+		movies = movieList;
+		printMovies();
 		//generateButtons();
 		generateTabs();
 	});
