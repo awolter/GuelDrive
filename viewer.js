@@ -18,6 +18,9 @@ var PORT = 1337; //40143?
 var HOST = '192.168.1.138';
 
 var videoDirectory = "./Videos/";
+var moviesFolder = "Movies/";
+var tvShowsFolder = "TVShows/";
+
 //var videoDirectory = "./Volumes/WD/Movies/mp4/";
 
 // for referencing files
@@ -32,8 +35,7 @@ app.use('/Videos', express.static('videos'));
 io.on('connection', function(socket){
 
     // get the list of videos in the /Videos/ directory
-    getVideoList();
-
+    getMovieList();
 
     // for testing
     socket.on('loadMessages', function(){
@@ -53,16 +55,16 @@ http.listen(PORT, HOST, function(){
 });
 
 // creates video objects, creates a list, and sends to client
-function getVideoList(){
-    var files = fs.readdirSync(videoDirectory);
-    var videoList = [];
+function getMovieList(){
+    var files = fs.readdirSync(videoDirectory + moviesFolder);
+    var movieList = [];
     for (var i in files) {
         if (files.hasOwnProperty(i)) {//jQuery check
 
             // split the array
             var fileStringArr = files[i].split(".");
 
-            // create the video name
+            // create the movie name
             var fileName = "";
             for(var j = 0; j < fileStringArr.length - 1; j++){
                 fileName += fileStringArr[j];
@@ -73,33 +75,34 @@ function getVideoList(){
 
             // create & test the filetype
             var fileType = fileStringArr[j];
-            if (validMovieFileType(fileType)){
+            if (validVideoFileType(fileType)){
 
-                // create video object
-                var video = {
+                // create movie object
+                var movie = {
                     "name": fileName,
                     "filename": files[i],
                     "imageType": ".jpg"
                 };
-                videoList.push(video);
-                console.log("Video[" + i + "]: " + JSON.stringify(video, null, 2));
+                movieList.push(movie);
+                //console.log("Movie[" + i + "]: " + JSON.stringify(movie, null, 2));
             }
         }
     }
-
-    io.emit('videos', videoList);
+    console.log("Number of movies loaded: " + movieList.length);
+    io.emit('setMovies', movieList);
 }
 
 // test if a filetype is valid
-function validMovieFileType(FILETYPE){
-    console.log("FILE TYPE: " + FILETYPE);
+function validVideoFileType(FILETYPE){
+
     if(FILETYPE == null){ return false; }
 
     var s = FILETYPE.toLowerCase();
     if(s == "mkv" || s == "mp4" || s == "avi" || s == "m4v"){
+        //console.log("FILE TYPE: " + FILETYPE);
         return true;
     }else{
-        console.log("Invalid File Type: " + s);
+        //console.log("Invalid File Type: " + s);
     }
     return false;
 }
