@@ -15,6 +15,8 @@ var coversDirectory = "./Covers/";
 var movies = [];
 var tvShows = [];
 
+// state of the video player
+var videoPlayerExpanded = false;
 
 // loading the page
 function loadPage(){
@@ -128,6 +130,22 @@ function loadTVShowsTab(){
 	$('#tvShowEpisodeView').hide();
 }
 
+function toggleExpandingVideoPlayer(){
+	if(videoPlayerExpanded){
+		console.log("Contract!");
+		videoPlayerExpanded = false;
+		$("#videoPlayer").attr("style", "top:100;bottom:150;");
+		//$("#videoPlayer").attr("bottom", 150);
+	}
+	else{
+		console.log("Expand!");
+		videoPlayerExpanded = true;
+		$("#videoPlayer").attr("style", "top:0;bottom:0;");
+		//$("#videoPlayer").attr("top", 0);
+		//$("#videoPlayer").attr("bottom", 0);
+	}
+}
+
 
 $(document).ready(function(){
 
@@ -172,5 +190,10 @@ $(document).ready(function(){
 			else
 				video.pause();
 		}
+	});
+
+	// expands the video player to the entire page (not full screen)
+	$("#videoPlayer").click(function(){
+		//toggleExpandingVideoPlayer();
 	});
 });
