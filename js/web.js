@@ -131,18 +131,15 @@ function loadTVShowsTab(){
 }
 
 function toggleExpandingVideoPlayer(){
+	// contract
 	if(videoPlayerExpanded){
-		console.log("Contract!");
 		videoPlayerExpanded = false;
 		$("#videoPlayer").attr("style", "top:100;bottom:150;");
-		//$("#videoPlayer").attr("bottom", 150);
 	}
+	/expand
 	else{
-		console.log("Expand!");
 		videoPlayerExpanded = true;
 		$("#videoPlayer").attr("style", "top:0;bottom:0;");
-		//$("#videoPlayer").attr("top", 0);
-		//$("#videoPlayer").attr("bottom", 0);
 	}
 }
 
