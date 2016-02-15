@@ -136,7 +136,7 @@ function toggleExpandingVideoPlayer(){
 		videoPlayerExpanded = false;
 		$("#videoPlayer").attr("style", "top:100;bottom:150;");
 	}
-	/expand
+	// expand
 	else{
 		videoPlayerExpanded = true;
 		$("#videoPlayer").attr("style", "top:0;bottom:0;");
