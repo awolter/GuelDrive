@@ -17,8 +17,8 @@
 <!-- Header -->
 <div id="headerDiv">
     <div id="mediaTypeSelector">
-        <img id="moviesTabImg" class="mediaTypeTabSelected" src="/images/Movies.png" onclick="switchMediaType(0)"/>
-        <img id="tvShowsTabImg" class="mediaTypeTabUnselected" src="/images/TVShows.png" onclick="switchMediaType(1)"/>
+        <img id="moviesTabImg" class="mediaTypeTabSelected" src="/images/Movies.png" onclick="loadMoviesTab()"/>
+        <img id="tvShowsTabImg" class="mediaTypeTabUnselected" src="/images/TVShows.png" onclick="loadTVShowsTab()"/>
     </div>
     <div id="logoDiv">
         <img src="/images/logo.png"/>
@@ -32,11 +32,12 @@
     <video id='currentVideo' autoplay controls></video>
 </div>
 
-<!-- Movie Selector -->
-<div id="movieSelector">
-    <div id="movieTabsDiv">
-        <ul id="movieTabList" class="movieImages">
-        </ul>
+<!-- Video Selector -->
+<div id="videoSelector">
+    <div id="videoTabsDiv">
+        <ul id="movieTabList" class="videoImages"></ul>
+        <ul id="tvShowTabList" class="videoImages"></ul>
+        <div id="tvShowEpisodeView">Test!</div>
     </div>
 </div>
 
