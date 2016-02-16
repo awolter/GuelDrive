@@ -156,6 +156,7 @@ function switchToEpisodeView(i){
 	$('#tvShowTabList').hide();
 }
 
+// switches the video player to the specified TV show
 function switchTVShow(i,j,k){
 	// clear the movie message
 	$('#videoMessage').hide();
