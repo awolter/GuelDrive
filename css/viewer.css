@@ -11,7 +11,11 @@
     -o-user-select: none;
     user-select: none;
 
+	/* Default font */
 	font-family: Montserrat, sans-serif;
+
+	/* Never show the "text-select" cursor when hovering over text */
+	cursor:default;
 }
 
 @font-face {
@@ -22,10 +26,6 @@
 body {
 	color: black;
 	background: #464646;
-}
-
-html>img{
-
 }
 
 
@@ -148,6 +148,8 @@ ul.videoImages li {
 	width: 120px;
 	height: 150px;
 }
+
+
 
 /* TV Show Episode View */
 
