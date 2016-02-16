@@ -191,6 +191,6 @@ $(document).ready(function(){
 
 	// expands the video player to the entire page (not full screen)
 	$("#videoPlayer").click(function(){
-		//toggleExpandingVideoPlayer();
+		toggleExpandingVideoPlayer();
 	});
 });
