@@ -18,11 +18,11 @@
 <!-- Header -->
 <div id="headerDiv">
     <div id="mediaTypeSelector">
-        <img id="moviesTabImg" class="mediaTypeTabSelected" src="/images/Movies.png" onclick="loadMoviesTab()"/>
-        <img id="tvShowsTabImg" class="mediaTypeTabUnselected" src="/images/TVShows.png" onclick="loadTVShowsTab()"/>
+        <img id="moviesTabImg" class="mediaTypeTabSelected" src="/images/Movies.png" onclick="loadMoviesTab()" draggable="false"/>
+        <img id="tvShowsTabImg" class="mediaTypeTabUnselected" src="/images/TVShows.png" onclick="loadTVShowsTab()" draggable="false"/>
     </div>
     <div id="logoDiv">
-        <img src="/images/logo.png"/>
+        <img src="/images/logo.png" draggable="false"/>
     </div>
 </div>
 
@@ -34,7 +34,14 @@
     <div id="videoTabsDiv">
         <ul id="movieTabList" class="videoImages"></ul>
         <ul id="tvShowTabList" class="videoImages"></ul>
-        <div id="tvShowEpisodeView">Test!</div>
+        <div id="tvShowEpisodeView">
+            <div id="tvShowEpisodeViewCover">
+
+            </div>
+            <div id="tvShowEpisodeViewTitle">
+                TEST
+            </div>
+        </div>
     </div>
 </div>
 

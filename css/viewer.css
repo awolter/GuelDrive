@@ -24,6 +24,10 @@ body {
 	background: #464646;
 }
 
+html>img{
+
+}
+
 
 /* Header */
 
@@ -117,6 +121,7 @@ body {
 /* Movie Selector */
 
 .videoTab{
+	background-color: transparent;
 	width: 90px;
 	height: 120px;
 	padding: 3px;
@@ -142,4 +147,48 @@ ul.videoImages li {
 	display: inline;
 	width: 120px;
 	height: 150px;
+}
+
+/* TV Show Episode View */
+.episodeViewCover{
+	width: 95px;
+	height: 127px;
+	padding-left: 43px;
+}
+
+
+#exitEpisodeViewButton{
+	height: 25px;
+	width: 25px;
+	position: fixed;
+	margin-left: 5px;
+	border-style: solid;
+	border-radius: 30px;
+	border-color: transparent;
+}
+
+#exitEpisodeViewBUtton:hover{
+	border-color: #ffa811;
+}
+
+#tvShowEpisodeViewCover{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	height: 138px;
+	width: 150px;
+}
+
+#tvShowEpisodeViewTitle{
+	color: #ffa811;
+	position: fixed;
+	bottom: 0;
+	margin-bottom: 115px;
+	left: 150px;
+	height: 20px;
+	border-color: #1A1A1A;
+	background: #1A1A1A;
+	border-style: solid;
+	border-radius: 9px;
+	overflow: hidden;
 }

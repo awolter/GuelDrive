@@ -39,7 +39,7 @@ function generateMovieTabs(){
 
 			tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
 			tab += "<img src='" + coversDirectory + movies[i].name + movies[i].imageType;
-			tab += "' id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' />";
+			tab += "' id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' draggable='false'/>";
 			tab += "</label></li>";
 
 
@@ -62,7 +62,7 @@ function generateTVShowTabs(){
 
 			tab += "<li><label for='tvShowTab" + i + "' title='" + tvShows[i].name + "'>";
 			tab += "<img src='" + videoDirectory + tvShowsFolder + tvShows[i].name + "/cover" + tvShows[i].imageType;
-			tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' />";
+			tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
 			tab += "</label></li>";
 
 			tvShowTabList.append(tab);
@@ -89,18 +89,40 @@ function switchMovie(i){
 function switchToEpisodeView(i){
 
 	var tvShowEpisodeView = $('#tvShowEpisodeView');
+	var tvShowEpisodeViewCover = $('#tvShowEpisodeViewCover');
+
 	// reset list (needed for multiple viewers at the same time!)
-	tvShowEpisodeView.html("");
+	tvShowEpisodeViewCover.html("");
+
+
+	var exitButton = "";
+	exitButton += "<label for='tvShowExit' title='Back to other TV shows'>";
+	exitButton += "<img src='./images/exitButtonDark.png' draggable='false' id='exitEpisodeViewButton' onclick='loadTVShowsTab()'/>";
+
+	tvShowEpisodeViewCover.append(exitButton);
 
 	var tab = "";
-
 	tab += "<label for='tvShowTab" + i + "' title='" + tvShows[i].name + "'>";
 	tab += "<img src='" + videoDirectory + tvShowsFolder + tvShows[i].name + "/cover" + tvShows[i].imageType;
-	tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='loadTVShowsTab()' />";
+	tab += "' id='tvShowTab" + i + "' class='episodeViewCover' draggable='false'/>";
 	tab += "</label>";
 
-	tvShowEpisodeView.append(tab);
+	tvShowEpisodeViewCover.append(tab);
 
+	// set the title
+	var tvShowEpisodeViewTitle = $('#tvShowEpisodeViewTitle');
+	tvShowEpisodeViewTitle.html("");
+
+	var tvTitle = tvShows[i].name + " - Seasons: " + tvShows[i].seasons.length;
+
+	var episodeCount = 0;
+	for(var j in tvShows[i].seasons){
+		episodeCount += tvShows[i].seasons[j].episodes.length;
+	}
+
+	tvTitle += ", Episodes: " + episodeCount;
+
+	tvShowEpisodeViewTitle.append(tvTitle);
 
 	tvShowEpisodeView.show();
 	$('#tvShowTabList').hide();
@@ -161,6 +183,7 @@ $(document).ready(function(){
 
 		// create movie tabs
 		generateMovieTabs();
+		console.log("Movie List:");
 		console.log(movieList);
 	});
 
@@ -173,6 +196,7 @@ $(document).ready(function(){
 
 		// create tv show tabs
 		generateTVShowTabs();
+		console.log("TV Show List:");
 		console.log(tvShowList);
 	});
 
