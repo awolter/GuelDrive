@@ -150,6 +150,13 @@ ul.videoImages li {
 }
 
 /* TV Show Episode View */
+
+#tvShowEpisodeView{
+	margin-left: 150px;
+	display: block;
+	overflow-y: auto;
+}
+
 .episodeViewCover{
 	width: 95px;
 	height: 127px;
@@ -186,9 +193,51 @@ ul.videoImages li {
 	margin-bottom: 115px;
 	left: 150px;
 	height: 20px;
-	border-color: #1A1A1A;
-	background: #1A1A1A;
+	border-color: transparent;
 	border-style: solid;
 	border-radius: 9px;
 	overflow: hidden;
+}
+
+ul.tvShowEpisodeViewTabs{
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	list-style-type: none;
+	border-color: #1A1A1A;
+	background: #1A1A1A;
+	border-style: solid;
+	/*border-radius: 9px;*/
+}
+
+ul.tvShowEpisodeViewTabs li {
+	display: inline-block;
+	vertical-align: middle;
+	height: 100px;
+	width: 150px;
+}
+
+.tvShowEpisodeViewTabSeason{
+	height: 20px;
+	font-size: 20px;
+	line-height: 20px;
+	color: #ffa811;
+}
+
+.tvShowEpisodeViewTabEpisode{
+	width: auto;
+	font-size: 13px;
+	height: 13px;
+	line-height: 13px;
+	color: #ffa811;
+	border-style: solid;
+	border-radius: 8px;
+	border-color: transparent;
+}
+
+.tvShowEpisodeViewTabEpisode:hover{
+	background-color: #464646;
 }

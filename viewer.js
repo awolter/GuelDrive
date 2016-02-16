@@ -129,7 +129,7 @@ function getTVShowList(){
 
                                     // add episode to episodes list
                                     var episode = {
-                                        "name": episodes[k],
+                                        "name": removeFileExtension(episodes[k]),
                                         "fileType": getFileExtension(episodes[k])
                                     };
                                     count++;

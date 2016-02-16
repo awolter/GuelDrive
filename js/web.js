@@ -90,15 +90,18 @@ function switchToEpisodeView(i){
 
 	var tvShowEpisodeView = $('#tvShowEpisodeView');
 	var tvShowEpisodeViewCover = $('#tvShowEpisodeViewCover');
+	var tvShowEpisodeViewTitle = $('#tvShowEpisodeViewTitle');
+	var tvShowEpisodeViewTabList = $('#tvShowEpisodeViewTabList');
 
-	// reset list (needed for multiple viewers at the same time!)
+	// reset the cover, title, and list view (needed for multiple viewers at the same time!)
 	tvShowEpisodeViewCover.html("");
+	tvShowEpisodeViewTitle.html("");
+	tvShowEpisodeViewTabList.html("");
 
-
+	// set the cover (and exit button)
 	var exitButton = "";
 	exitButton += "<label for='tvShowExit' title='Back to other TV shows'>";
 	exitButton += "<img src='./images/exitButtonDark.png' draggable='false' id='exitEpisodeViewButton' onclick='loadTVShowsTab()'/>";
-
 	tvShowEpisodeViewCover.append(exitButton);
 
 	var tab = "";
@@ -106,26 +109,70 @@ function switchToEpisodeView(i){
 	tab += "<img src='" + videoDirectory + tvShowsFolder + tvShows[i].name + "/cover" + tvShows[i].imageType;
 	tab += "' id='tvShowTab" + i + "' class='episodeViewCover' draggable='false'/>";
 	tab += "</label>";
-
 	tvShowEpisodeViewCover.append(tab);
 
-	// set the title
-	var tvShowEpisodeViewTitle = $('#tvShowEpisodeViewTitle');
-	tvShowEpisodeViewTitle.html("");
+
+	// set the title (and number of seasons/episodes)
 
 	var tvTitle = tvShows[i].name + " - Seasons: " + tvShows[i].seasons.length;
 
 	var episodeCount = 0;
-	for(var j in tvShows[i].seasons){
-		episodeCount += tvShows[i].seasons[j].episodes.length;
+	for(var ep in tvShows[i].seasons){
+		episodeCount += tvShows[i].seasons[ep].episodes.length;
 	}
-
 	tvTitle += ", Episodes: " + episodeCount;
-
 	tvShowEpisodeViewTitle.append(tvTitle);
 
+	// populate the list of seasons + episodes
+
+	var list = "";
+
+	for(var j in tvShows[i].seasons){
+
+		var curGroup = 0;
+
+		list += "<li><div class='tvShowEpisodeViewTabSeason'>" + tvShows[i].seasons[j].name + "</div>";
+
+		for(var k in tvShows[i].seasons[j].episodes){
+
+			if(curGroup == 4){
+				list += "</li><li><div class='tvShowEpisodeViewTabSeason'></div>";
+				curGroup = 0;
+			}
+
+			list += "<div class='tvShowEpisodeViewTabEpisode' onclick='switchTVShow(" + i + "," + j + "," + k +")'>"
+			list += tvShows[i].seasons[j].episodes[k].name + "</div>";
+			curGroup++;
+		}
+
+		list += "</li>";
+	}
+
+
+	tvShowEpisodeViewTabList.append(list);
+
+	// show the div
 	tvShowEpisodeView.show();
 	$('#tvShowTabList').hide();
+}
+
+function switchTVShow(i,j,k){
+	// clear the movie message
+	$('#videoMessage').hide();
+
+	var show = tvShows[i].name + "/";
+	var season = tvShows[i].seasons[j].name + "/";
+	var episode = tvShows[i].seasons[j].episodes[k].name + "." + tvShows[i].seasons[j].episodes[k].fileType;
+
+	console.log("Playing: " + videoDirectory + tvShowsFolder + show + season + episode);
+
+	// check that the i is a valid movie
+	if(tvShows[i].seasons[j].episodes[k] != null){
+		$('#currentVideo').attr("src", videoDirectory + tvShowsFolder + show + season + episode);
+	}
+	else{
+		console.warn("Invalid tv switch attempt!");
+	}
 }
 
 // load the movies tab
