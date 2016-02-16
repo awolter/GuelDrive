@@ -48,7 +48,7 @@ io.on('connection', function(socket){
 // load webpage
 app.get('/', function(req, res){
     console.log("viewer.html loaded");
-    res.sendFile(__dirname + '/viewer.html', {maxAge: 0});
+    res.sendFile(__dirname + '/gueldrive.html', {maxAge: 0});
 });
 
 // creating server
