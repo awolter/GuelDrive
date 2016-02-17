@@ -4,11 +4,12 @@
 
 var socket = io();
 
+// video directories
 var videoDirectory = "./Videos/";
 var moviesFolder = "Movies/";
 var tvShowsFolder = "TVShows/";
 
-//var videoDirectory = "./Volumes/WD/Movies/mp4/";
+// cover directory
 var coversDirectory = "./Covers/";
 
 // lists of videos
@@ -139,8 +140,9 @@ function switchToEpisodeView(i){
 				list += "</li><li><div class='tvShowEpisodeViewTabSeason'></div>";
 				curGroup = 0;
 			}
-
-			list += "<div class='tvShowEpisodeViewTabEpisode' onclick='switchTVShow(" + i + "," + j + "," + k +")'>"
+			list += "<label for='tv " + i + "," + j + "," + k +"' title='" + tvShows[i].seasons[j].episodes[k].name + "' >";
+			list += "<div class='tvShowEpisodeViewTabEpisode' id='tv " + i + "," + j + "," + k +"'";
+			list += " onclick='switchTVShow(" + i + "," + j + "," + k + ")'>"
 			list += tvShows[i].seasons[j].episodes[k].name + "</div>";
 			curGroup++;
 		}

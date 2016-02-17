@@ -12,24 +12,27 @@ var fs = require('fs');
 var url = require("url");
 var path = require("path");
 
+
 // server host and port
 var PORT = 1337; //40143?
 //var HOST = '127.0.0.1';
 var HOST = '192.168.1.138';
+//var HOST = '192.168.1.108';
 
+
+// Directories and folders
 var videoDirectory = "./Videos/";
 var moviesFolder = "Movies/";
 var tvShowsFolder = "TVShows/";
 
-//var videoDirectory = "./Volumes/WD/Movies/mp4/";
 
 // for referencing files
 app.use('/css', express.static('css'));
 app.use('/images', express.static('images'));
-app.use('/Covers', express.static('covers'));
+app.use('/Covers', express.static('Covers'));
 app.use('/js', express.static('js'));
-app.use('/Videos', express.static('videos'));
-//app.use('/Volumes/WD/Movies/mp4', express.static('Volumes/WD/Movies/mp4'));
+app.use('/Videos', express.static('Videos'));
+
 
 // websocket
 io.on('connection', function(socket){

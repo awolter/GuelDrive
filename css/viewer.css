@@ -28,6 +28,22 @@ body {
 	background: #464646;
 }
 
+/*
+.customScrollBar1::-webkit-scrollbar {
+	height: 5px;
+	width: 10px;
+	background: linear-gradient(#464646, #ffa811, #464646);
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.customScrollBar1::-webkit-scrollbar-thumb {
+	background: #1a1a1a;
+	-webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, .75);
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+} */
+
 
 /* Header */
 
@@ -156,7 +172,7 @@ ul.videoImages li {
 #tvShowEpisodeView{
 	margin-left: 150px;
 	display: block;
-	overflow-y: auto;
+	overflow-y: hidden;
 }
 
 .episodeViewCover{
@@ -227,6 +243,7 @@ ul.tvShowEpisodeViewTabs li {
 	font-size: 20px;
 	line-height: 20px;
 	color: #ffa811;
+	overflow: hidden;
 }
 
 .tvShowEpisodeViewTabEpisode{
@@ -238,6 +255,7 @@ ul.tvShowEpisodeViewTabs li {
 	border-style: solid;
 	border-radius: 8px;
 	border-color: transparent;
+	overflow: hidden;
 }
 
 .tvShowEpisodeViewTabEpisode:hover{
