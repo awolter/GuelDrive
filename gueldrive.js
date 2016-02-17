@@ -124,12 +124,12 @@ function getTVShowList(){
                         // iterate through the episodes
                         var episodes = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/" + seasons[j] + "/");
                         for (var k in episodes) {
-
-                            if (episodes.hasOwnProperty(i) && episodes[k].charAt(0) != ".") { //jQuery check
+                            console.log(i + j + k);
+                            if (episodes.hasOwnProperty(k) && episodes[k].charAt(0) != ".") { //jQuery check
                                 // check that the file is of valid type
-
+                                console.log(i + j + k);
                                 if (validVideoFileExtension(getFileExtension(episodes[k]))) {
-
+                                    console.log(i + j + k);
                                     // add episode to episodes list
                                     var episode = {
                                         "name": removeFileExtension(episodes[k]),
@@ -190,7 +190,7 @@ function validVideoFileExtension(ex){
         //console.log("FILE TYPE: " + ex);
         return true;
     }else{
-        //console.log("Invalid File Type: " + s);
+        console.log("Invalid File Type: " + s);
     }
     return false;
 }
