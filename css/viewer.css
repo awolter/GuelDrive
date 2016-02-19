@@ -25,7 +25,9 @@
 
 body {
 	color: black;
-	background: #464646;
+	/* background: #464646; */
+	background: #464646; /**/
+
 }
 
 /*
@@ -62,7 +64,7 @@ body {
 	background: #464646; /* Old browsers */
 	background: -moz-linear-gradient(top,  #464646 0%, #1a1a1a 100%, #131313 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(top,  #464646 0%,#1a1a1a 100%,#131313 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #464646 0%,#1a1a1a 100%,#131313 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	background: url('../images/dark_bg.png') repeat, linear-gradient(to bottom,  #464646 0%,#1a1a1a 100%,#131313 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#464646', endColorstr='#131313',GradientType=0 ); /* IE6-9 */
 
 }
@@ -93,7 +95,7 @@ body {
 /* Video Player */
 
 #videoPlayer{
-	background: #1a1a1a;
+	background: url('../images/dark_bg.png') repeat, #1a1a1a;
 	position: fixed;
 	top: 100px;
 	left: 0;
@@ -129,7 +131,7 @@ body {
 #videoTabsDiv{
 	width: 100%;
 	height: 140px;
-	background-color: #464646;
+	background: #464646;
 	display: flex;
 	align-items: flex-end;
 }
