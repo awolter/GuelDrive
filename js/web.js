@@ -2,6 +2,8 @@
  **      web.js      **
  **********************/
 
+/** Global Variables **/
+
 var socket = io();
 
 // video directories
@@ -19,12 +21,21 @@ var tvShows = [];
 // state of the video player
 var videoPlayerExpanded = false;
 
+
+/** Page load **/
+
 // loading the page
 function loadPage(){
+	// load the movies tab
 	loadMoviesTab();
+	// emit message to web server
 	socket.emit('clientStart');
+	// start the current video message faded out
+	$("#currentVideoMessage").fadeOut();
 }
 
+
+/** Movie Functions **/
 
 // generates tabs with each movie name + image
 function generateMovieTabs(){
@@ -50,6 +61,25 @@ function generateMovieTabs(){
 
 }
 
+// switches the movie player to the i-th movie
+function switchMovie(i){
+	// clear the empty video message
+	$('#emptyVideoMessage').hide();
+
+	// check that the i is a valid movie
+	if(i < movies.length){
+		$('#currentVideo').attr("src", videoDirectory + moviesFolder + movies[i].filename);
+		// change the current video message
+		setCurrentVideoMessage(movies[i].name);
+	}
+	else{
+		console.warn("Invalid movie switch attempt!");
+	}
+}
+
+
+/** TV Show Functions **/
+
 // generates tabs with each tv show + image
 function generateTVShowTabs(){
 	var tvShowTabList = $('#tvShowTabList');
@@ -71,20 +101,6 @@ function generateTVShowTabs(){
 	}
 }
 
-
-// switches the movie player to the i-th movie
-function switchMovie(i){
-	// clear the movie message
-	$('#videoMessage').hide();
-
-	// check that the i is a valid movie
-	if(i < movies.length){
-		$('#currentVideo').attr("src", videoDirectory + moviesFolder + movies[i].filename);
-	}
-	else{
-		console.warn("Invalid movie switch attempt!");
-	}
-}
 
 // switches the tv selector to the i-th tv show
 function switchToEpisodeView(i){
@@ -112,9 +128,7 @@ function switchToEpisodeView(i){
 	tab += "</label>";
 	tvShowEpisodeViewCover.append(tab);
 
-
 	// set the title (and number of seasons/episodes)
-
 	var tvTitle = tvShows[i].name + " - Seasons: " + tvShows[i].seasons.length;
 
 	var episodeCount = 0;
@@ -125,7 +139,6 @@ function switchToEpisodeView(i){
 	tvShowEpisodeViewTitle.append(tvTitle);
 
 	// populate the list of seasons + episodes
-
 	var list = "";
 
 	for(var j in tvShows[i].seasons){
@@ -150,7 +163,6 @@ function switchToEpisodeView(i){
 		list += "</li>";
 	}
 
-
 	tvShowEpisodeViewTabList.append(list);
 
 	// show the div
@@ -161,7 +173,7 @@ function switchToEpisodeView(i){
 // switches the video player to the specified TV show
 function switchTVShow(i,j,k){
 	// clear the movie message
-	$('#videoMessage').hide();
+	$('#emptyVideoMessage').hide();
 
 	var show = tvShows[i].name + "/";
 	var season = tvShows[i].seasons[j].name + "/";
@@ -172,11 +184,14 @@ function switchTVShow(i,j,k){
 	// check that the i is a valid movie
 	if(tvShows[i].seasons[j].episodes[k] != null){
 		$('#currentVideo').attr("src", videoDirectory + tvShowsFolder + show + season + episode);
+		setCurrentVideoMessage(tvShows[i].name + ": " + tvShows[i].seasons[j].name + " - " + tvShows[i].seasons[j].episodes[k].name);
 	}
 	else{
 		console.warn("Invalid tv switch attempt!");
 	}
 }
+
+/** Header media switching tabs **/
 
 // load the movies tab
 function loadMoviesTab(){
@@ -202,16 +217,28 @@ function loadTVShowsTab(){
 	$('#tvShowEpisodeView').hide();
 }
 
+
+/** Setting the video message **/
+
+function setCurrentVideoMessage(vidName){
+	$("#currentVideoMessage").html("");
+	$("#currentVideoMessage").append(vidName);
+}
+
+/** Expanding the video player **/
+
 function toggleExpandingVideoPlayer(){
 	// contract
 	if(videoPlayerExpanded){
 		videoPlayerExpanded = false;
 		$("#videoPlayer").attr("style", "top:100;bottom:150;");
+		$("#currentVideoMessage").attr("style", "top:105;left:15px;");
 	}
 	// expand
 	else{
 		videoPlayerExpanded = true;
 		$("#videoPlayer").attr("style", "top:0;bottom:0;");
+		$("#currentVideoMessage").attr("style", "top:15;left:15px;");
 	}
 }
 
@@ -267,4 +294,13 @@ $(document).ready(function(){
 	$("#videoPlayer").click(function(){
 		toggleExpandingVideoPlayer();
 	});
+
+	// shows the current video message on mouseover and fades after timeout
+	$("#videoPlayer").mouseover(function(){
+		$("#currentVideoMessage").fadeIn();
+		setTimeout(function(){
+			$("#currentVideoMessage").fadeOut();
+		}, 3000);
+	});
+
 });

@@ -101,6 +101,7 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 150px;
+	color: #ffa911;/*color: transparent;*/
 }
 
 #currentVideo{
@@ -108,7 +109,13 @@ body {
 	height: 100%;
 }
 
-#videoMessage{
+#currentVideoMessage{
+	position: fixed;
+	top: 100px;
+	left: 15px;
+}
+
+#emptyVideoMessage{
 	color: #ffa811;
 	position: fixed;
 	top: 50%;
