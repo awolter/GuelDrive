@@ -20,6 +20,8 @@ var tvShows = [];
 
 // state of the video player
 var videoPlayerExpanded = false;
+var playingTVShow = false;
+var lastPlayedTVShow = {};
 
 
 /** Page load **/
@@ -65,6 +67,7 @@ function generateMovieTabs(){
 function switchMovie(i){
 	// clear the empty video message
 	$('#emptyVideoMessage').hide();
+	playingTVShow = false;
 
 	// check that the i is a valid movie
 	if(i < movies.length){
@@ -91,8 +94,8 @@ function generateTVShowTabs(){
 
 			var tab = "";
 
-			tab += "<li><label for='tvShowTab" + i + "' title='" + tvShows[i].name + "'>";
-			tab += "<img src='" + videoDirectory + tvShowsFolder + tvShows[i].name + "/cover" + tvShows[i].imageType;
+			tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
+			tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
 			tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
 			tab += "</label></li>";
 
@@ -122,14 +125,14 @@ function switchToEpisodeView(i){
 	tvShowEpisodeViewCover.append(exitButton);
 
 	var tab = "";
-	tab += "<label for='tvShowTab" + i + "' title='" + tvShows[i].name + "'>";
-	tab += "<img src='" + videoDirectory + tvShowsFolder + tvShows[i].name + "/cover" + tvShows[i].imageType;
+	tab += "<label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
+	tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
 	tab += "' id='tvShowTab" + i + "' class='episodeViewCover' draggable='false'/>";
 	tab += "</label>";
 	tvShowEpisodeViewCover.append(tab);
 
 	// set the title (and number of seasons/episodes)
-	var tvTitle = tvShows[i].name + " - Seasons: " + tvShows[i].seasons.length;
+	var tvTitle = getTVShowString(i) + " - Seasons: " + tvShows[i].seasons.length;
 
 	var episodeCount = 0;
 	for(var ep in tvShows[i].seasons){
@@ -145,7 +148,7 @@ function switchToEpisodeView(i){
 
 		var curGroup = 0;
 
-		list += "<li><div class='tvShowEpisodeViewTabSeason'>" + tvShows[i].seasons[j].name + "</div>";
+		list += "<li><div class='tvShowEpisodeViewTabSeason'>" + getSeasonString(i,j) + "</div>";
 
 		for(var k in tvShows[i].seasons[j].episodes){
 
@@ -153,10 +156,10 @@ function switchToEpisodeView(i){
 				list += "</li><li><div class='tvShowEpisodeViewTabSeason'></div>";
 				curGroup = 0;
 			}
-			list += "<label for='tv " + i + "," + j + "," + k +"' title='" + tvShows[i].seasons[j].episodes[k].name + "' >";
+			list += "<label for='tv " + i + "," + j + "," + k +"' title='" + getEpisodeString(i,j,k) + "' >";
 			list += "<div class='tvShowEpisodeViewTabEpisode' id='tv " + i + "," + j + "," + k +"'";
 			list += " onclick='switchTVShow(" + i + "," + j + "," + k + ")'>"
-			list += tvShows[i].seasons[j].episodes[k].name + "</div>";
+			list += getEpisodeString(i,j,k) + "</div>";
 			curGroup++;
 		}
 
@@ -175,21 +178,41 @@ function switchTVShow(i,j,k){
 	// clear the movie message
 	$('#emptyVideoMessage').hide();
 
-	var show = tvShows[i].name + "/";
-	var season = tvShows[i].seasons[j].name + "/";
-	var episode = tvShows[i].seasons[j].episodes[k].name + "." + tvShows[i].seasons[j].episodes[k].fileType;
+	var show = getTVShowString(i) + "/";
+	var season = getSeasonString(i,j) + "/";
+	var episode = getEpisodeString(i,j,k) + "." + tvShows[i].seasons[j].episodes[k].fileType;
 
 	console.log("Playing: " + videoDirectory + tvShowsFolder + show + season + episode);
 
 	// check that the i is a valid movie
 	if(tvShows[i].seasons[j].episodes[k] != null){
 		$('#currentVideo').attr("src", videoDirectory + tvShowsFolder + show + season + episode);
-		setCurrentVideoMessage(tvShows[i].name + ": " + tvShows[i].seasons[j].name + " - " + tvShows[i].seasons[j].episodes[k].name);
+		setCurrentVideoMessage(getTVShowString(i) + ": " + getSeasonString(i,j) + " - " + getEpisodeString(i,j,k));
+		lastPlayedTVShow.show = i;
+		lastPlayedTVShow.season = j;
+		lastPlayedTVShow.episode = k;
+		playingTVShow = true;
 	}
 	else{
 		console.warn("Invalid tv switch attempt!");
 	}
 }
+
+// returns the tv show name string
+function getTVShowString(i){
+	return tvShows[i].name;
+}
+
+// returns the tv show's season string name
+function getSeasonString(i,j){
+	return tvShows[i].seasons[j].name;
+}
+
+// returns the tv show's episode name in a specific season
+function getEpisodeString(i,j,k){
+	return tvShows[i].seasons[j].episodes[k].name
+}
+
 
 /** Header media switching tabs **/
 
@@ -313,7 +336,14 @@ $(document).ready(function(){
 		console.log('Video has ended!');
 		$('#currentVideo').attr("src","");
 		$("#currentVideoMessage").html("");
-		// TODO: add autoplay to next episode functionality for TV shows
+
+		// auto play next tv show if you are watching a tv show with another episode
+		if(playingTVShow == true && lastPlayedTVShow.episode < tvShows[lastPlayedTVShow.show].seasons[lastPlayedTVShow.season].episodes.length-1){
+			switchTVShow(lastPlayedTVShow.show,lastPlayedTVShow.season,lastPlayedTVShow.episode+1);
+		}
+		else{
+			playingTVShow = false;
+		}
 	});
 
 });
