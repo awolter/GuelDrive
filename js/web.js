@@ -218,11 +218,19 @@ function loadTVShowsTab(){
 }
 
 
-/** Setting the video message **/
+/** Video Message **/
 
 function setCurrentVideoMessage(vidName){
 	$("#currentVideoMessage").html("");
 	$("#currentVideoMessage").append(vidName);
+	showVideoMessageAndFade();
+}
+
+function showVideoMessageAndFade(){
+	$("#currentVideoMessage").fadeIn();
+	setTimeout(function(){
+		$("#currentVideoMessage").fadeOut();
+	}, 3000);
 }
 
 /** Expanding the video player **/
@@ -297,10 +305,15 @@ $(document).ready(function(){
 
 	// shows the current video message on mouseover and fades after timeout
 	$("#videoPlayer").mouseover(function(){
-		$("#currentVideoMessage").fadeIn();
-		setTimeout(function(){
-			$("#currentVideoMessage").fadeOut();
-		}, 3000);
+		showVideoMessageAndFade();
+	});
+
+	// clear the video once it has ended
+	$('#currentVideo').on('ended',function(){
+		console.log('Video has ended!');
+		$('#currentVideo').attr("src","");
+		$("#currentVideoMessage").html("");
+		// TODO: add autoplay to next episode functionality for TV shows
 	});
 
 });
