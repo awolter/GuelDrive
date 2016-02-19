@@ -331,19 +331,21 @@ $(document).ready(function(){
 		showVideoMessageAndFade();
 	});
 
-	// clear the video once it has ended
+	// either play the next episode or clear the video screen
 	$('#currentVideo').on('ended',function(){
 		console.log('Video has ended!');
-		$('#currentVideo').attr("src","");
-		$("#currentVideoMessage").html("");
 
 		// auto play next tv show if you are watching a tv show with another episode
 		if(playingTVShow == true && lastPlayedTVShow.episode < tvShows[lastPlayedTVShow.show].seasons[lastPlayedTVShow.season].episodes.length-1){
 			switchTVShow(lastPlayedTVShow.show,lastPlayedTVShow.season,lastPlayedTVShow.episode+1);
 		}
+		// otherwise, clear the video screen
 		else{
 			playingTVShow = false;
+			$('#currentVideo').attr("src","");
+			$("#currentVideoMessage").html("");
 		}
 	});
 
 });
+
