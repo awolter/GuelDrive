@@ -23,6 +23,10 @@ var videoPlayerExpanded = false;
 var playingTVShow = false;
 var lastPlayedTVShow = {};
 
+// next episode countdown
+var countDownSeconds = 15;
+var countDownAbort = false;
+
 
 /** Page load **/
 
@@ -187,7 +191,7 @@ function switchTVShow(i,j,k){
 	// check that the i is a valid movie
 	if(tvShows[i].seasons[j].episodes[k] != null){
 		$('#currentVideo').attr("src", videoDirectory + tvShowsFolder + show + season + episode);
-		setCurrentVideoMessage(getTVShowString(i) + ": " + getSeasonString(i,j) + " - " + getEpisodeString(i,j,k));
+		setCurrentVideoMessage(getTVShowString(i) + ": " + getSeasonString(i,j) + ", " + getEpisodeString(i,j,k));
 		lastPlayedTVShow.show = i;
 		lastPlayedTVShow.season = j;
 		lastPlayedTVShow.episode = k;
@@ -344,6 +348,7 @@ $(document).ready(function(){
 			playingTVShow = false;
 			$('#currentVideo').attr("src","");
 			$("#currentVideoMessage").html("");
+			$('#emptyVideoMessage').show();
 		}
 	});
 

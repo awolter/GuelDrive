@@ -88,7 +88,7 @@ body {
 }
 
 .mediaTypeTabUnselected:hover{
-	background: #2d2d2d;
+	background: rgba(26, 26, 26, 0.50);
 }
 
 
