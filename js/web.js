@@ -250,15 +250,9 @@ function loadTVShowsTab(){
 function setCurrentVideoMessage(vidName){
 	$("#currentVideoMessage").html("");
 	$("#currentVideoMessage").append(vidName);
-	showVideoMessageAndFade();
+	//showVideoMessageAndFade();
 }
 
-function showVideoMessageAndFade(){
-	$("#currentVideoMessage").fadeIn();
-	setTimeout(function(){
-		$("#currentVideoMessage").fadeOut();
-	}, 3000);
-}
 
 /** Expanding the video player **/
 
@@ -330,9 +324,22 @@ $(document).ready(function(){
 		toggleExpandingVideoPlayer();
 	});
 
+	var moveTimer;
+	var videoMessageHidden = true;
 	// shows the current video message on mouseover and fades after timeout
-	$("#videoPlayer").mouseover(function(){
-		showVideoMessageAndFade();
+	$("#videoPlayer").mousemove(function(){
+		if (moveTimer) {
+			window.clearTimeout(moveTimer);
+			moveTimer = 0;
+		}
+		if(videoMessageHidden) {
+			$("#currentVideoMessage").fadeIn();
+			videoMessageHidden = false;
+		}
+		moveTimer = setTimeout(function() {
+			$("#currentVideoMessage").fadeOut();
+			videoMessageHidden = true;
+		}, 3000);
 	});
 
 	// either play the next episode or clear the video screen

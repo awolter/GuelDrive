@@ -49,6 +49,7 @@ io.on('connection', function(socket){
 // load webpage
 app.get('/', function(req, res){
     console.log("viewer.html loaded");
+    //noinspection JSUnresolvedVariable
     res.sendFile(__dirname + '/gueldrive.html', {maxAge: 0});
 });
 
@@ -59,6 +60,7 @@ http.listen(PORT, HOST, function(){
 
 // creates video objects, creates a list, and sends to client
 function getMovieList(){
+    //noinspection JSUnresolvedFunction
     var files = fs.readdirSync(videoDirectory + moviesFolder);
     var movieList = [];
     for(var i in files){
@@ -83,7 +85,7 @@ function getMovieList(){
             }
         }
     }
-    console.log("Number of movies loaded: " + movieList.length);
+    console.log("Number of Movies loaded: " + movieList.length);
     io.emit('setMovies', movieList);
 }
 
@@ -94,6 +96,7 @@ function getTVShowList(){
     var tvShows = [];
 
     // iterate through the shows
+    //noinspection JSUnresolvedFunction
     var shows = fs.readdirSync(videoDirectory + tvShowsFolder);
     for(var i in shows){
         if(shows.hasOwnProperty(i) && shows[i].charAt(0) != "."){ //jQuery check
@@ -106,6 +109,7 @@ function getTVShowList(){
             show.seasons = [];
 
             // iterate through the seasons
+            //noinspection JSUnresolvedFunction
             var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/");
             for(var j in seasons) {
                 if (seasons.hasOwnProperty(j) && seasons[j].charAt(0) != ".") { //jQuery check
@@ -120,14 +124,15 @@ function getTVShowList(){
                         season.episodes = [];
 
                         // iterate through the episodes
+                        //noinspection JSUnresolvedFunction
                         var episodes = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/" + seasons[j] + "/");
                         for (var k in episodes) {
-                            console.log(i + j + k);
+                            //console.log(i + j + k);
                             if (episodes.hasOwnProperty(k) && episodes[k].charAt(0) != ".") { //jQuery check
                                 // check that the file is of valid type
-                                console.log(i + j + k);
+                                //console.log(i + j + k);
                                 if (validVideoFileExtension(getFileExtension(episodes[k]))) {
-                                    console.log(i + j + k);
+                                    //console.log(i + j + k);
                                     // add episode to episodes list
                                     var episode = {
                                         "name": removeFileExtension(episodes[k]),
@@ -178,7 +183,7 @@ function removeFileExtension(file){
     return fileName;
 }
 
-// test if a filetype is valid
+// test if a file type is valid
 function validVideoFileExtension(ex){
 
     if(ex == null){ return false; }
