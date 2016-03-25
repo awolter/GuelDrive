@@ -23,10 +23,11 @@ var videoPlayerExpanded = false;
 var playingTVShow = false;
 var lastPlayedTVShow = {};
 
-// next episode countdown
-var countDownSeconds = 15;
-var countDownAbort = false;
-
+// jQuery selectors
+var videoPlayer_jQ = $("#videoPlayer");
+var currentVideo_jQ = $("#currentVideo");
+var currentVideoMessage_jQ = $("#currentVideoMessage");
+var emptyVideoMessage_jQ = $('#emptyVideoMessage');
 
 /** Page load **/
 
@@ -37,7 +38,7 @@ function loadPage(){
 	// emit message to web server
 	socket.emit('clientStart');
 	// start the current video message faded out
-	$("#currentVideoMessage").fadeOut();
+	currentVideoMessage_jQ.fadeOut();
 }
 
 
@@ -70,12 +71,12 @@ function generateMovieTabs(){
 // switches the movie player to the i-th movie
 function switchMovie(i){
 	// clear the empty video message
-	$('#emptyVideoMessage').hide();
+	emptyVideoMessage_jQ.hide();
 	playingTVShow = false;
 
 	// check that the i is a valid movie
 	if(i < movies.length){
-		$('#currentVideo').attr("src", videoDirectory + moviesFolder + movies[i].filename);
+		currentVideo_jQ.attr("src", videoDirectory + moviesFolder + movies[i].filename);
 		// change the current video message
 		setCurrentVideoMessage(movies[i].name);
 	}
@@ -125,7 +126,7 @@ function switchToEpisodeView(i){
 	// set the cover (and exit button)
 	var exitButton = "";
 	exitButton += "<label for='tvShowExit' title='Back to other TV shows'>";
-	exitButton += "<img src='./images/exitButtonDark.png' draggable='false' id='exitEpisodeViewButton' onclick='loadTVShowsTab()'/>";
+	exitButton += "<img src='/images/exitButtonDark.png' draggable='false' id='exitEpisodeViewButton' onclick='loadTVShowsTab()'/>";
 	tvShowEpisodeViewCover.append(exitButton);
 
 	var tab = "";
@@ -139,7 +140,7 @@ function switchToEpisodeView(i){
 	var tvTitle = getTVShowString(i) + " - Seasons: " + tvShows[i].seasons.length;
 
 	var episodeCount = 0;
-	for(var ep in tvShows[i].seasons){
+	for(var ep = 0; ep < tvShows[i].seasons.length; ep++){
 		episodeCount += tvShows[i].seasons[ep].episodes.length;
 	}
 	tvTitle += ", Episodes: " + episodeCount;
@@ -148,13 +149,13 @@ function switchToEpisodeView(i){
 	// populate the list of seasons + episodes
 	var list = "";
 
-	for(var j in tvShows[i].seasons){
+	for(var j = 0; j < tvShows[i].seasons.length; j++){
 
 		var curGroup = 0;
 
 		list += "<li><div class='tvShowEpisodeViewTabSeason'>" + getSeasonString(i,j) + "</div>";
 
-		for(var k in tvShows[i].seasons[j].episodes){
+		for(var k = 0; k < tvShows[i].seasons[j].episodes.length; k++){
 
 			if(curGroup == 4){
 				list += "</li><li><div class='tvShowEpisodeViewTabSeason'></div>";
@@ -162,7 +163,7 @@ function switchToEpisodeView(i){
 			}
 			list += "<label for='tv " + i + "," + j + "," + k +"' title='" + getEpisodeString(i,j,k) + "' >";
 			list += "<div class='tvShowEpisodeViewTabEpisode' id='tv " + i + "," + j + "," + k +"'";
-			list += " onclick='switchTVShow(" + i + "," + j + "," + k + ")'>"
+			list += " onclick='switchTVShow(" + i + "," + j + "," + k + ")'>";
 			list += getEpisodeString(i,j,k) + "</div>";
 			curGroup++;
 		}
@@ -180,7 +181,7 @@ function switchToEpisodeView(i){
 // switches the video player to the specified TV show
 function switchTVShow(i,j,k){
 	// clear the movie message
-	$('#emptyVideoMessage').hide();
+	emptyVideoMessage_jQ.hide();
 
 	var show = getTVShowString(i) + "/";
 	var season = getSeasonString(i,j) + "/";
@@ -190,7 +191,7 @@ function switchTVShow(i,j,k){
 
 	// check that the i is a valid movie
 	if(tvShows[i].seasons[j].episodes[k] != null){
-		$('#currentVideo').attr("src", videoDirectory + tvShowsFolder + show + season + episode);
+		currentVideo_jQ.attr("src", videoDirectory + tvShowsFolder + show + season + episode);
 		setCurrentVideoMessage(getTVShowString(i) + ": " + getSeasonString(i,j) + ", " + getEpisodeString(i,j,k));
 		lastPlayedTVShow.show = i;
 		lastPlayedTVShow.season = j;
@@ -248,9 +249,8 @@ function loadTVShowsTab(){
 /** Video Message **/
 
 function setCurrentVideoMessage(vidName){
-	$("#currentVideoMessage").html("");
-	$("#currentVideoMessage").append(vidName);
-	//showVideoMessageAndFade();
+	currentVideoMessage_jQ.html("");
+	currentVideoMessage_jQ.append(vidName);
 }
 
 
@@ -260,14 +260,14 @@ function toggleExpandingVideoPlayer(){
 	// contract
 	if(videoPlayerExpanded){
 		videoPlayerExpanded = false;
-		$("#videoPlayer").attr("style", "top:100;bottom:150;");
-		$("#currentVideoMessage").attr("style", "top:105;left:15px;");
+		videoPlayer_jQ.attr("style", "top:100;bottom:150;");
+		currentVideoMessage_jQ.attr("style", "top:105;left:15px;");
 	}
 	// expand
 	else{
 		videoPlayerExpanded = true;
-		$("#videoPlayer").attr("style", "top:0;bottom:0;");
-		$("#currentVideoMessage").attr("style", "top:15;left:15px;");
+		videoPlayer_jQ.attr("style", "top:0;bottom:0;");
+		currentVideoMessage_jQ.attr("style", "top:15;left:15px;");
 	}
 }
 
@@ -311,7 +311,7 @@ $(document).ready(function(){
 		var target = $(e.target);
 		if(e.keyCode == 32 && !target.is('input,[contenteditable="true"],textarea')) { //If space is pressed outside a text field
 			e.preventDefault();
-			var video= $('#currentVideo')[0];//[0] needed to get the HTML DOM Element
+			var video = currentVideo_jQ[0];//[0] needed to get the HTML DOM Element
 			if (video.paused)
 				video.play();
 			else
@@ -320,30 +320,29 @@ $(document).ready(function(){
 	});
 
 	// expands the video player to the entire page (not full screen)
-	$("#videoPlayer").click(function(){
+	videoPlayer_jQ.click(function(){
 		toggleExpandingVideoPlayer();
 	});
 
 	var moveTimer;
 	var videoMessageHidden = true;
-	// shows the current video message on mouseover and fades after timeout
-	$("#videoPlayer").mousemove(function(){
+	// shows the current video message on mouseover and fades after no movement
+	videoPlayer_jQ.mousemove(function(){
 		if (moveTimer) {
-			window.clearTimeout(moveTimer);
-			moveTimer = 0;
+			clearTimeout(moveTimer);
 		}
 		if(videoMessageHidden) {
-			$("#currentVideoMessage").fadeIn();
+			currentVideoMessage_jQ.fadeIn();
 			videoMessageHidden = false;
 		}
 		moveTimer = setTimeout(function() {
-			$("#currentVideoMessage").fadeOut();
+			currentVideoMessage_jQ.fadeOut();
 			videoMessageHidden = true;
 		}, 3000);
 	});
 
 	// either play the next episode or clear the video screen
-	$('#currentVideo').on('ended',function(){
+	currentVideo_jQ.on('ended',function(){
 		console.log('Video has ended!');
 
 		// auto play next tv show if you are watching a tv show with another episode
@@ -353,9 +352,9 @@ $(document).ready(function(){
 		// otherwise, clear the video screen
 		else{
 			playingTVShow = false;
-			$('#currentVideo').attr("src","");
-			$("#currentVideoMessage").html("");
-			$('#emptyVideoMessage').show();
+			currentVideo_jQ.attr("src","");
+			currentVideoMessage_jQ.html("");
+			emptyVideoMessage_jQ.show();
 		}
 	});
 
