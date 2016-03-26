@@ -28,6 +28,7 @@ var videoPlayer_jQ = $("#videoPlayer");
 var currentVideo_jQ = $("#currentVideo");
 var currentVideoMessage_jQ = $("#currentVideoMessage");
 var emptyVideoMessage_jQ = $('#emptyVideoMessage');
+var searchInput_jQ = $("#searchInput");
 
 /** Page load **/
 
@@ -53,16 +54,17 @@ function generateMovieTabs(){
 	// create tab for each movie
 	for(var i in movies){
 		if (movies.hasOwnProperty(i)) { //jQuery check
+			// only generate tabs that meet the search criteria
+			if(searchInput_jQ.val().toLowerCase() == "" || movies[i].name.toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+				var tab = "";
 
-			var tab  = "";
+				tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
+				tab += "<img src='" + coversDirectory + movies[i].name + movies[i].imageType;
+				tab += "' id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' draggable='false'/>";
+				tab += "</label></li>";
 
-			tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
-			tab += "<img src='" + coversDirectory + movies[i].name + movies[i].imageType;
-			tab += "' id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' draggable='false'/>";
-			tab += "</label></li>";
-
-
-			movieTabList.append(tab);
+				movieTabList.append(tab);
+			}
 		}
 	}
 
@@ -96,15 +98,16 @@ function generateTVShowTabs(){
 
 	for(var i in tvShows){
 		if(tvShows.hasOwnProperty(i)){
+			if(searchInput_jQ.val().toLowerCase() == "" || getTVShowString(i).toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+				var tab = "";
 
-			var tab = "";
+				tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
+				tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
+				tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
+				tab += "</label></li>";
 
-			tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
-			tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
-			tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
-			tab += "</label></li>";
-
-			tvShowTabList.append(tab);
+				tvShowTabList.append(tab);
+			}
 		}
 	}
 }
@@ -356,6 +359,12 @@ $(document).ready(function(){
 			currentVideoMessage_jQ.html("");
 			emptyVideoMessage_jQ.show();
 		}
+	});
+
+	// generate tabs upon input being added to search bar
+	searchInput_jQ.on('input',function(){
+		generateMovieTabs();
+		generateTVShowTabs();
 	});
 
 });

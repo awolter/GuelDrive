@@ -271,9 +271,9 @@ ul.tvShowEpisodeViewTabs li {
 /** Search Bar **/
 #searchBar{
 	position: fixed;
-	top: 10px;
-	right: 10px;
-	width: 200px;
+	top: 5px;
+	right: 3px;
+	width: 175px;
 }
 
 .searchStyle {
@@ -284,14 +284,14 @@ ul.tvShowEpisodeViewTabs li {
 	background: #222;
 	background: linear-gradient(#333, #222);
 	border: 1px solid #444;
-	border-radius: 5px 5px 5px 5px;
+	border-radius: 12px;
 	box-shadow: 0 2px 0 #000;
 	color: #888;
-	font-size: 13px;
-	height: 40px;
+	font-size: 12px;
+	height: 25px;
 	padding: 0 10px;
 	text-shadow: 0 -1px 0 #000;
-	width: 200px;
+	width: 175px;
 }
 
 .searchStyle input:focus {
