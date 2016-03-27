@@ -266,13 +266,13 @@ function toggleExpandingVideoPlayer(){
 	if(videoPlayerExpanded){
 		videoPlayerExpanded = false;
 		videoPlayer_jQ.attr("style", "top:100;bottom:150;");
-		currentVideoMessage_jQ.attr("style", "top:105;left:15px;");
+		currentVideoMessage_jQ.attr("style", "top:105;left:5px;");
 	}
 	// expand
 	else{
 		videoPlayerExpanded = true;
 		videoPlayer_jQ.attr("style", "top:0;bottom:0;");
-		currentVideoMessage_jQ.attr("style", "top:15;left:15px;");
+		currentVideoMessage_jQ.attr("style", "top:5;left:5px;");
 	}
 }
 
@@ -345,12 +345,12 @@ $(document).ready(function(){
 			clearTimeout(moveTimer);
 		}
 		if(videoMessageHidden) {
-			currentVideoMessage_jQ.fadeIn();
+			currentVideoMessage_jQ.show();
 			if(videoPlayerExpanded){
-				contractButton_jQ.fadeIn();
+				contractButton_jQ.show();
 			}
 			else{
-				expandButton_jQ.fadeIn();
+				expandButton_jQ.show();
 			}
 
 			videoMessageHidden = false;

@@ -108,8 +108,11 @@ body {
 
 #currentVideoMessage{
 	position: fixed;
-	top: 100px;
-	left: 15px;
+	top: 105px;
+	left: 5px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 6px;
+	padding: 5px 8px;
 }
 
 #emptyVideoMessage{
@@ -317,16 +320,22 @@ ul.tvShowEpisodeViewTabs li {
 
 #expandButton{
 	position: fixed;
-	top: 100px;
-	right: 15px;
-	height: 25px;
-	width: 25px;
+	top: 105px;
+	right: 5px;
+	height: 19px;
+	width: 19px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 6px;
+	padding: 5px;
 }
 
 #contractButton{
 	position: fixed;
-	top: 15px;
-	right: 15px;
-	height: 25px;
-	width: 25px;
+	top: 5px;
+	right: 5px;
+	height: 19px;
+	width: 19px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 6px;
+	padding: 5px;
 }
