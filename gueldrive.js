@@ -69,7 +69,7 @@ function getMovieList(){
             // get the file name without extension
             var fileName = removeFileExtension(files[i]);
 
-            // create & test the filetype
+            // create & test the file type
             var fileType = getFileExtension(files[i]);
 
             if(validVideoFileExtension(fileType)){

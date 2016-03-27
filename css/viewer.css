@@ -314,3 +314,19 @@ ul.tvShowEpisodeViewTabs li {
 		box-shadow: 0 0 20px rgba(255, 169, 17, 0.6), inset 0 0 10px rgba(255, 169, 17, 0.4), 0 2px 0 #000;
 	}
 }
+
+#expandButton{
+	position: fixed;
+	top: 100px;
+	right: 15px;
+	height: 25px;
+	width: 25px;
+}
+
+#contractButton{
+	position: fixed;
+	top: 15px;
+	right: 15px;
+	height: 25px;
+	width: 25px;
+}

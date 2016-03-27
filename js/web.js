@@ -29,6 +29,8 @@ var currentVideo_jQ = $("#currentVideo");
 var currentVideoMessage_jQ = $("#currentVideoMessage");
 var emptyVideoMessage_jQ = $('#emptyVideoMessage');
 var searchInput_jQ = $("#searchInput");
+var expandButton_jQ = $("#expandButton");
+var contractButton_jQ = $("#contractButton");
 
 /** Page load **/
 
@@ -323,7 +325,15 @@ $(document).ready(function(){
 	});
 
 	// expands the video player to the entire page (not full screen)
-	videoPlayer_jQ.click(function(){
+	expandButton_jQ.click(function(){
+		expandButton_jQ.hide();
+		contractButton_jQ.show();
+		toggleExpandingVideoPlayer();
+	});
+
+	contractButton_jQ.click(function(){
+		contractButton_jQ.hide();
+		expandButton_jQ.show();
 		toggleExpandingVideoPlayer();
 	});
 
@@ -336,10 +346,23 @@ $(document).ready(function(){
 		}
 		if(videoMessageHidden) {
 			currentVideoMessage_jQ.fadeIn();
+			if(videoPlayerExpanded){
+				contractButton_jQ.fadeIn();
+			}
+			else{
+				expandButton_jQ.fadeIn();
+			}
+
 			videoMessageHidden = false;
 		}
 		moveTimer = setTimeout(function() {
 			currentVideoMessage_jQ.fadeOut();
+			if(videoPlayerExpanded){
+				contractButton_jQ.fadeOut();
+			}
+			else{
+				expandButton_jQ.fadeOut();
+			}
 			videoMessageHidden = true;
 		}, 3000);
 	});
