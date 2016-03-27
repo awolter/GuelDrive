@@ -1,4 +1,4 @@
-# GuelDrive
+# GuelDrive v0.2.1
 
 Home media streaming application using Node.js.
 
