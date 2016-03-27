@@ -57,7 +57,7 @@ function generateMovieTabs(){
 	for(var i in movies){
 		if (movies.hasOwnProperty(i)) { //jQuery check
 			// only generate tabs that meet the search criteria
-			if(searchInput_jQ.val().toLowerCase() == "" || movies[i].name.toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+			if(searchInput_jQ.val() == "" || movies[i].name.toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
 				var tab = "";
 
 				tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
@@ -100,7 +100,7 @@ function generateTVShowTabs(){
 
 	for(var i in tvShows){
 		if(tvShows.hasOwnProperty(i)){
-			if(searchInput_jQ.val().toLowerCase() == "" || getTVShowString(i).toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+			if(searchInput_jQ.val() == "" || getTVShowString(i).toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
 				var tab = "";
 
 				tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
@@ -317,10 +317,12 @@ $(document).ready(function(){
 		if(e.keyCode == 32 && !target.is('input,[contenteditable="true"],textarea')) { //If space is pressed outside a text field
 			e.preventDefault();
 			var video = currentVideo_jQ[0];//[0] needed to get the HTML DOM Element
-			if (video.paused)
+			if (video.paused){
 				video.play();
-			else
+			}
+			else{
 				video.pause();
+			}
 		}
 	});
 
