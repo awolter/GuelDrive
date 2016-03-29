@@ -124,6 +124,28 @@ body {
 	z-index: 9999;
 }
 
+#expandButton{
+	position: fixed;
+	top: 105px;
+	right: 5px;
+	height: 19px;
+	width: 19px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 6px;
+	padding: 5px;
+}
+
+#contractButton{
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	height: 19px;
+	width: 19px;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 6px;
+	padding: 5px;
+}
+
 
 /* Video Selector */
 
@@ -316,26 +338,4 @@ ul.tvShowEpisodeViewTabs li {
 		border-color: #ffa911;
 		box-shadow: 0 0 20px rgba(255, 169, 17, 0.6), inset 0 0 10px rgba(255, 169, 17, 0.4), 0 2px 0 #000;
 	}
-}
-
-#expandButton{
-	position: fixed;
-	top: 105px;
-	right: 5px;
-	height: 19px;
-	width: 19px;
-	background-color: rgba(0, 0, 0, 0.7);
-	border-radius: 6px;
-	padding: 5px;
-}
-
-#contractButton{
-	position: fixed;
-	top: 5px;
-	right: 5px;
-	height: 19px;
-	width: 19px;
-	background-color: rgba(0, 0, 0, 0.7);
-	border-radius: 6px;
-	padding: 5px;
 }
