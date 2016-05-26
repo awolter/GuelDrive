@@ -38,8 +38,6 @@ var contractButton_jQ = $("#contractButton");
 function loadPage(){
 	// load the movies tab
 	loadMoviesTab();
-	// emit message to web server
-	socket.emit('clientStart');
 	// start the current video message faded out
 	currentVideoMessage_jQ.fadeOut();
 }
