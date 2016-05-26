@@ -35,15 +35,13 @@ app.use('/Videos', express.static('Videos'));
 // websocket
 io.on('connection', function(socket){
 
-    // get the list of movies and send them to the web client(s)
-    getMovieList();
-    // get the list of tv shows and send them to the web client(s)
-    getTVShowList();
+    console.log("New viewer connected: " + socket.request.connection.remoteAddress);
 
-    // for testing
-    socket.on('clientStart', function(){
-        io.emit('logMessage', "Socket.io connection successful.");
-    });
+    // get the list of movies and send them to the web client(s)
+    getMovieList(socket.id);
+    // get the list of tv shows and send them to the web client(s)
+    getTVShowList(socket.id);
+
 });
 
 // load webpage
@@ -59,7 +57,7 @@ http.listen(PORT, HOST, function(){
 });
 
 // creates video objects, creates a list, and sends to client
-function getMovieList(){
+function getMovieList(socketId){
     //noinspection JSUnresolvedFunction
     var files = fs.readdirSync(videoDirectory + moviesFolder);
     var movieList = [];
@@ -86,10 +84,10 @@ function getMovieList(){
         }
     }
     console.log("Number of Movies loaded: " + movieList.length);
-    io.emit('setMovies', movieList);
+    io.to(socketId).emit('setMovies', movieList);
 }
 
-function getTVShowList(){
+function getTVShowList(socketId){
     // counter for number of episodes
     var count = 0;
 
@@ -156,7 +154,7 @@ function getTVShowList(){
     }
     //console.log(JSON.stringify(tvShows,null,2));
     console.log("Number of TV Show episodes loaded: " + count);
-    io.emit('setTVShows', tvShows);
+    io.to(socketId).emit('setTVShows', tvShows);
 }
 
 // parses the file extension from a full file name
