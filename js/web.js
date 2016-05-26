@@ -24,13 +24,13 @@ var playingTVShow = false;
 var lastPlayedTVShow = {};
 
 // jQuery selectors
-var videoPlayer_jQ = $("#videoPlayer");
-var currentVideo_jQ = $("#currentVideo");
-var currentVideoMessage_jQ = $("#currentVideoMessage");
-var emptyVideoMessage_jQ = $('#emptyVideoMessage');
-var searchInput_jQ = $("#searchInput");
-var expandButton_jQ = $("#expandButton");
-var contractButton_jQ = $("#contractButton");
+var $videoPlayer = $("#videoPlayer");
+var $currentVideo = $("#currentVideo");
+var $currentVideoMessage = $("#currentVideoMessage");
+var $emptyVideoMessage = $('#emptyVideoMessage');
+var $searchInput = $("#searchInput");
+var $expandButton = $("#expandButton");
+var $contractButton = $("#contractButton");
 
 /** Page load **/
 
@@ -39,7 +39,7 @@ function loadPage(){
 	// load the movies tab
 	loadMoviesTab();
 	// start the current video message faded out
-	currentVideoMessage_jQ.fadeOut();
+	$currentVideoMessage.fadeOut();
 }
 
 
@@ -55,7 +55,7 @@ function generateMovieTabs(){
 	for(var i in movies){
 		if (movies.hasOwnProperty(i)) { //jQuery check
 			// only generate tabs that meet the search criteria
-			if(searchInput_jQ.val() == "" || movies[i].name.toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+			if($searchInput.val() == "" || movies[i].name.toLowerCase().indexOf($searchInput.val().toLowerCase()) > -1) {
 				var tab = "";
 
 				tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
@@ -73,12 +73,12 @@ function generateMovieTabs(){
 // switches the movie player to the i-th movie
 function switchMovie(i){
 	// clear the empty video message
-	emptyVideoMessage_jQ.hide();
+	$emptyVideoMessage.hide();
 	playingTVShow = false;
 
 	// check that the i is a valid movie
 	if(i < movies.length){
-		currentVideo_jQ.attr("src", videoDirectory + moviesFolder + movies[i].filename);
+		$currentVideo.attr("src", videoDirectory + moviesFolder + movies[i].filename);
 		// change the current video message
 		setCurrentVideoMessage(movies[i].name);
 	}
@@ -98,7 +98,7 @@ function generateTVShowTabs(){
 
 	for(var i in tvShows){
 		if(tvShows.hasOwnProperty(i)){
-			if(searchInput_jQ.val() == "" || getTVShowString(i).toLowerCase().indexOf(searchInput_jQ.val().toLowerCase()) > -1) {
+			if($searchInput.val() == "" || getTVShowString(i).toLowerCase().indexOf($searchInput.val().toLowerCase()) > -1) {
 				var tab = "";
 
 				tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
@@ -184,7 +184,7 @@ function switchToEpisodeView(i){
 // switches the video player to the specified TV show
 function switchTVShow(i,j,k){
 	// clear the movie message
-	emptyVideoMessage_jQ.hide();
+	$emptyVideoMessage.hide();
 
 	var show = getTVShowString(i) + "/";
 	var season = getSeasonString(i,j) + "/";
@@ -194,7 +194,7 @@ function switchTVShow(i,j,k){
 
 	// check that the i is a valid movie
 	if(tvShows[i].seasons[j].episodes[k] != null){
-		currentVideo_jQ.attr("src", videoDirectory + tvShowsFolder + show + season + episode);
+		$currentVideo.attr("src", videoDirectory + tvShowsFolder + show + season + episode);
 		setCurrentVideoMessage(getTVShowString(i) + ": " + getSeasonString(i,j) + ", " + getEpisodeString(i,j,k));
 		lastPlayedTVShow.show = i;
 		lastPlayedTVShow.season = j;
@@ -252,8 +252,8 @@ function loadTVShowsTab(){
 /** Video Message **/
 
 function setCurrentVideoMessage(vidName){
-	currentVideoMessage_jQ.html("");
-	currentVideoMessage_jQ.append(vidName);
+	$currentVideoMessage.html("");
+	$currentVideoMessage.append(vidName);
 }
 
 
@@ -263,14 +263,14 @@ function toggleExpandingVideoPlayer(){
 	// contract
 	if(videoPlayerExpanded){
 		videoPlayerExpanded = false;
-		videoPlayer_jQ.attr("style", "top:100;bottom:150;");
-		currentVideoMessage_jQ.attr("style", "top:105;left:5px;");
+		$videoPlayer.attr("style", "top:100;bottom:150;");
+		$currentVideoMessage.attr("style", "top:105;left:5px;");
 	}
 	// expand
 	else{
 		videoPlayerExpanded = true;
-		videoPlayer_jQ.attr("style", "top:0;bottom:0;");
-		currentVideoMessage_jQ.attr("style", "top:5;left:5px;");
+		$videoPlayer.attr("style", "top:0;bottom:0;");
+		$currentVideoMessage.attr("style", "top:5;left:5px;");
 	}
 }
 
@@ -314,7 +314,7 @@ $(document).ready(function(){
 		var target = $(e.target);
 		if(e.keyCode == 32 && !target.is('input,[contenteditable="true"],textarea')) { //If space is pressed outside a text field
 			e.preventDefault();
-			var video = currentVideo_jQ[0];//[0] needed to get the HTML DOM Element
+			var video = $currentVideo[0];//[0] needed to get the HTML DOM Element
 			if (video.paused){
 				video.play();
 			}
@@ -325,50 +325,50 @@ $(document).ready(function(){
 	});
 
 	// expands the video player to the entire page (not full screen)
-	expandButton_jQ.click(function(){
-		expandButton_jQ.hide();
-		contractButton_jQ.show();
+	$expandButton.click(function(){
+		$expandButton.hide();
+		$contractButton.show();
 		toggleExpandingVideoPlayer();
 	});
 
-	contractButton_jQ.click(function(){
-		contractButton_jQ.hide();
-		expandButton_jQ.show();
+	$contractButton.click(function(){
+		$contractButton.hide();
+		$expandButton.show();
 		toggleExpandingVideoPlayer();
 	});
 
 	var moveTimer;
 	var videoMessageHidden = true;
 	// shows the current video message on mouseover and fades after no movement
-	videoPlayer_jQ.mousemove(function(){
+	$videoPlayer.mousemove(function(){
 		if (moveTimer) {
 			clearTimeout(moveTimer);
 		}
 		if(videoMessageHidden) {
-			currentVideoMessage_jQ.show();
+			$currentVideoMessage.show();
 			if(videoPlayerExpanded){
-				contractButton_jQ.show();
+				$contractButton.show();
 			}
 			else{
-				expandButton_jQ.show();
+				$expandButton.show();
 			}
 
 			videoMessageHidden = false;
 		}
 		moveTimer = setTimeout(function() {
-			currentVideoMessage_jQ.fadeOut();
+			$currentVideoMessage.fadeOut();
 			if(videoPlayerExpanded){
-				contractButton_jQ.fadeOut();
+				$contractButton.fadeOut();
 			}
 			else{
-				expandButton_jQ.fadeOut();
+				$expandButton.fadeOut();
 			}
 			videoMessageHidden = true;
 		}, 3000);
 	});
 
 	// either play the next episode or clear the video screen
-	currentVideo_jQ.on('ended',function(){
+	$currentVideo.on('ended',function(){
 		console.log('Video has ended!');
 
 		// auto play next tv show if you are watching a tv show with another episode
@@ -378,14 +378,14 @@ $(document).ready(function(){
 		// otherwise, clear the video screen
 		else{
 			playingTVShow = false;
-			currentVideo_jQ.attr("src","");
-			currentVideoMessage_jQ.html("");
-			emptyVideoMessage_jQ.show();
+			$currentVideo.attr("src","");
+			$currentVideoMessage.html("");
+			$emptyVideoMessage.show();
 		}
 	});
 
 	// generate tabs upon input being added to search bar
-	searchInput_jQ.on('input',function(){
+	$searchInput.on('input',function(){
 		generateMovieTabs();
 		generateTVShowTabs();
 	});
