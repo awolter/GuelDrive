@@ -59,8 +59,16 @@ http.listen(PORT, HOST, function(){
 // creates video objects, creates a list, and sends to client
 function getMovieList(socketId){
     //noinspection JSUnresolvedFunction
-    var files = fs.readdirSync(videoDirectory + moviesFolder);
+    var files;
     var movieList = [];
+
+    try{
+        files = fs.readdirSync(videoDirectory + moviesFolder);
+    }catch(e) {
+        console.error('Error reading videoDirectory + moviesFolder:');
+        console.error(e);
+    }
+
     for(var i in files){
         if(files.hasOwnProperty(i) && files[i].charAt(0) != "."){ //jQuery check
 
@@ -90,12 +98,18 @@ function getMovieList(socketId){
 function getTVShowList(socketId){
     // counter for number of episodes
     var count = 0;
-
+    var shows;
     var tvShows = [];
 
     // iterate through the shows
     //noinspection JSUnresolvedFunction
-    var shows = fs.readdirSync(videoDirectory + tvShowsFolder);
+    try{
+        shows = fs.readdirSync(videoDirectory + tvShowsFolder);
+    }catch(e) {
+        console.error('Error reading videoDirectory + tvShowsFolder:');
+        console.error(e);
+    }
+
     for(var i in shows){
         if(shows.hasOwnProperty(i) && shows[i].charAt(0) != "."){ //jQuery check
 
@@ -108,7 +122,7 @@ function getTVShowList(socketId){
 
             // iterate through the seasons
             //noinspection JSUnresolvedFunction
-            var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/");
+            var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/"); //TODO - Surround in try/catch
             for(var j in seasons) {
                 if (seasons.hasOwnProperty(j) && seasons[j].charAt(0) != ".") { //jQuery check
 
