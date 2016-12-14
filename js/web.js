@@ -275,7 +275,6 @@ function toggleExpandingVideoPlayer(){
 
 
 $(document).ready(function(){
-
 	loadPage();
 
 	socket.on('logMessage', function(msg){
