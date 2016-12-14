@@ -388,6 +388,5 @@ $(document).ready(function(){
 		generateMovieTabs();
 		generateTVShowTabs();
 	});
-
 });
 
