@@ -22,7 +22,8 @@ var HOST = '127.0.0.1';
 var videoDirectory = "./Videos/";
 var moviesFolder = "Movies/";
 var tvShowsFolder = "TVShows/";
-
+var setupFileLocation = 'setup/';
+var setupFileName = 'setup.json';
 
 // for referencing files
 app.use('/css', express.static('css'));
@@ -31,6 +32,7 @@ app.use('/Covers', express.static('Covers'));
 app.use('/js', express.static('js'));
 app.use('/Videos', express.static('Videos'));
 
+readSetupFile();
 
 // websocket
 io.on('connection', function(socket){
@@ -123,6 +125,7 @@ function getTVShowList(socketId){
             // iterate through the seasons
             //noinspection JSUnresolvedFunction
             var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/"); //TODO - Surround in try/catch
+            console.log(seasons);
             for(var j in seasons) {
                 if (seasons.hasOwnProperty(j) && seasons[j].charAt(0) != ".") { //jQuery check
 
@@ -210,3 +213,25 @@ function validVideoFileExtension(ex){
     return false;
 }
 
+function readSetupFile(){
+    if(!fs.existsSync(setupFileLocation + setupFileName)){
+        console.log('Warning - ' + setupFileName + ' Does Not Exist');
+
+        connect();
+    }else{
+        fs.readFile(setupFileLocation + setupFileName, 'utf8', function(err, data){
+            console.log('Getting File: ' + setupFileName);
+            if(err){
+                console.log('Error Reading AutoStart File.');
+                return;
+            }
+
+            var setup = JSON.parse(data);
+
+            videoDirectory = "E:\\Movies\\";
+            moviesFolder = "Movies\\";
+            tvShowsFolder = "TVShows\\";
+
+        });
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "host": "127.0.0.1",
+  "port": 1337,
+  "videoDirectory": "./Videos/",
+  "moviesFolder": "Movies/",
+  "tvShowsFolder": "TVShows/"
+}
