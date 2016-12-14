@@ -67,7 +67,6 @@ function generateMovieTabs(){
 			}
 		}
 	}
-
 }
 
 // switches the movie player to the i-th movie
