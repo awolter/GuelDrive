@@ -389,4 +389,3 @@ $(document).ready(function(){
 		generateTVShowTabs();
 	});
 });
-
