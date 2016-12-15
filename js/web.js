@@ -6,11 +6,6 @@
 
 var socket = io();
 
-// video directories
-var videoDirectory = "./Videos/";
-var moviesFolder = "Movies/";
-var tvShowsFolder = "TVShows/";
-
 // cover directory
 var coversDirectory = "./Covers/";
 
@@ -77,7 +72,11 @@ function switchMovie(i){
 
 	// check that the i is a valid movie
 	if(i < movies.length){
-		$currentVideo.attr("src", videoDirectory + moviesFolder + movies[i].filename);
+		$currentVideo.find('source').attr('src', 'movie/' + movies[i].filename);
+		$currentVideo.find('source').attr('type', 'video/' + getVideoTypeAttr(movies[i].filename));
+		$currentVideo[0].load();
+		$currentVideo[0].play();
+//		$currentVideo.attr("src", videoDirectory + moviesFolder + movies[i].filename);
 		// change the current video message
 		setCurrentVideoMessage(movies[i].name);
 	}
@@ -101,8 +100,8 @@ function generateTVShowTabs(){
 				var tab = "";
 
 				tab += "<li><label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
-				tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
-				tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
+				//tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
+				//tab += "' id='tvShowTab" + i + "' class='videoTab' onclick='switchToEpisodeView(" + i + ")' draggable='false'/>";
 				tab += "</label></li>";
 
 				tvShowTabList.append(tab);
@@ -388,3 +387,21 @@ $(document).ready(function(){
 		generateTVShowTabs();
 	});
 });
+
+function getVideoTypeAttr(filename){
+	switch(getFileExtension(filename)){
+		case "mkv":
+			return "mp4";
+		case 'mp4':
+			return "mp4";
+		default:
+			return "mp4";
+	}
+}
+
+function getFileExtension(file){
+
+    var fileArr = file.split(".");
+
+    return fileArr[fileArr.length-1];
+}
