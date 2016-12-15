@@ -228,10 +228,9 @@ function readSetupFile(){
 
             var setup = JSON.parse(data);
 
-            videoDirectory = "E:\\Movies\\";
-            moviesFolder = "Movies\\";
-            tvShowsFolder = "TVShows\\";
-
+            videoDirectory = setup.videoDirectory;
+            moviesFolder = setup.moviesFolder;
+            tvShowsFolder = setup.tvShowsFolder;
         });
     }
 }
