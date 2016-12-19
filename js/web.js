@@ -54,8 +54,8 @@ function generateMovieTabs(){
 				var tab = "";
 
 				tab += "<li><label for='movieTab" + i + "' title='" + movies[i].name + "'>";
-				tab += "<img src='" + coversDirectory + movies[i].name + movies[i].imageType;
-				tab += "' id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' draggable='false'/>";
+				tab += "<img src='" + movies[i].poster + "'";
+				tab += "id='movieTab" + i + "' class='videoTab' onclick='switchMovie(" + i + ")' draggable='false'/>";
 				tab += "</label></li>";
 
 				movieTabList.append(tab);
@@ -65,24 +65,25 @@ function generateMovieTabs(){
 }
 
 // switches the movie player to the i-th movie
-function switchMovie(i){
+function switchMovie(uuid){
 	// clear the empty video message
 	$emptyVideoMessage.hide();
 	playingTVShow = false;
+	var foundFlag = false;
 
-	// check that the i is a valid movie
-	if(i < movies.length){
-		$currentVideo.find('source').attr('src', 'movie/' + movies[i].filename);
-		$currentVideo.find('source').attr('type', 'video/' + getVideoTypeAttr(movies[i].filename));
-		$currentVideo[0].load();
-		$currentVideo[0].play();
-//		$currentVideo.attr("src", videoDirectory + moviesFolder + movies[i].filename);
-		// change the current video message
-		setCurrentVideoMessage(movies[i].name);
-	}
-	else{
-		console.warn("Invalid movie switch attempt!");
-	}
+    movies.forEach(function(movie){
+        if(movie.uuid === uuid){
+            $currentVideo.find('source').attr('src', 'movie/' + movie.filename);
+            $currentVideo.find('source').attr('type', 'video/' + getVideoTypeAttr(movie.filename));
+            $currentVideo[0].load();
+            $currentVideo[0].play();
+            setCurrentVideoMessage(movie.name);
+			foundFlag = true;
+        }
+    });
+
+    if(!foundFlag)
+        console.warn('Invalid movie switch attempt!');
 }
 
 
@@ -132,8 +133,8 @@ function switchToEpisodeView(i){
 
 	var tab = "";
 	tab += "<label for='tvShowTab" + i + "' title='" + getTVShowString(i) + "'>";
-	tab += "<img src='" + videoDirectory + tvShowsFolder + getTVShowString(i) + "/cover" + tvShows[i].imageType;
-	tab += "' id='tvShowTab" + i + "' class='episodeViewCover' draggable='false'/>";
+	tab += "<img src='" + tvShows[i].poster + "'";
+	tab += "id='tvShowTab" + i + "' class='episodeViewCover' draggable='false'/>";
 	tab += "</label>";
 	tvShowEpisodeViewCover.append(tab);
 
@@ -289,8 +290,21 @@ $(document).ready(function(){
 
 		// create movie tabs
 		generateMovieTabs();
-		console.log("Movie List:");
-		console.log(movieList);
+		//console.log("Movie List:");
+		//console.log(movieList);
+	});
+
+	socket.on('movie', function(movie){
+        var movieTabList = $('#movieTabList');
+        var tab = "";
+
+        tab += "<li data-uuid='" + movie.uuid + "'><label for='movieTab' title='" + movie.name + "'>";
+        tab += "<img src='" + movie.poster + "'";
+        tab += "class='videoTab movieTab' draggable='false'/>";
+        tab += "</label></li>";
+
+        movieTabList.append(tab);
+        movies.push(movie);
 	});
 
 	// populate the tv shows list
@@ -320,6 +334,20 @@ $(document).ready(function(){
 			}
 		}
 	});
+
+    $(document).on('click', '.movieTab', function(){
+		var $target = $(this);
+		var element;
+
+		if($target.is('img'))
+			element = $target.parent().parent();
+		else if($target.is('label'))
+			element = $target.parent();
+		else
+			element = $target;
+
+		switchMovie(element.attr('data-uuid'));
+    });
 
 	// expands the video player to the entire page (not full screen)
 	$expandButton.click(function(){
