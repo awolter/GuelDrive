@@ -34,6 +34,7 @@ app.use('/js', express.static('js'));
 app.use('/Videos', express.static('Videos'));
 
 readSetupFile();
+connect();
 
 // websocket
 io.on('connection', function(socket){
@@ -90,11 +91,6 @@ app.get('/movie/:filename', function(req, res){
             });
 
     });
-});
-
-// creating server
-http.listen(PORT, HOST, function(){
-    console.log('Socket listening on ' + HOST + ':' + PORT);
 });
 
 // creates video objects, creates a list, and sends to client
@@ -265,7 +261,7 @@ function readSetupFile(){
     if(!fs.existsSync(setupFileLocation + setupFileName)){
         console.log('Warning - ' + setupFileName + ' Does Not Exist');
 
-        connect();
+
     }else{
         fs.readFile(setupFileLocation + setupFileName, 'utf8', function(err, data){
             console.log('Getting File: ' + setupFileName);
@@ -279,8 +275,19 @@ function readSetupFile(){
             videoDirectory = setup.videoDirectory;
             moviesFolder = setup.moviesFolder;
             tvShowsFolder = setup.tvShowsFolder;
+            HOST = setup.host;
+            PORT = setup.port;
+
+            connect();
         });
     }
+}
+
+function connect() {
+// creating server
+    http.listen(PORT, HOST, function(){
+        console.log('Socket listening on ' + HOST + ':' + PORT);
+    });
 }
 
 //Credit: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript?page=1&tab=votes#tab-top
