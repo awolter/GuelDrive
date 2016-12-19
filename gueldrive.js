@@ -11,6 +11,7 @@ var io = require('socket.io')(http);
 var fs = require('fs');
 var url = require("url");
 var path = require("path");
+var imdb = require('imdb-api');
 
 
 // server host and port
@@ -42,8 +43,7 @@ io.on('connection', function(socket){
     // get the list of movies and send them to the web client(s)
     getMovieList(socket.id);
     // get the list of tv shows and send them to the web client(s)
-    getTVShowList(socket.id);
-
+    //getTVShowList(socket.id);
 });
 
 // load webpage
@@ -110,30 +110,39 @@ function getMovieList(socketId){
         console.error(e);
     }
 
-    for(var i in files){
-        if(files.hasOwnProperty(i) && files[i].charAt(0) != "."){ //jQuery check
+    files.forEach(function(file){
+        if(file.indexOf('.') > -1 && !(file.indexOf('.avi') > -1)){
+            console.log(file);
+            if (file.charAt(0) != '.') {
+                var filename = removeFileExtension(file);
+                var fileType = getFileExtension(file);
+                var movie = {};
 
-            // get the file name without extension
-            var fileName = removeFileExtension(files[i]);
-
-            // create & test the file type
-            var fileType = getFileExtension(files[i]);
-
-            if(validVideoFileExtension(fileType)){
-
-                // create movie object
-                var movie = {
-                    "name": fileName,
-                    "filename": files[i],
-                    "imageType": ".jpg"
-                };
-                movieList.push(movie);
-                //console.log("Movie[" + i + "]: " + JSON.stringify(movie, null, 2));
+                if(validVideoFileExtension(fileType)){
+                    imdb.get(filename)
+                        .then(function(data){
+                            movie = {
+                                uuid: uuid(),
+                                name: data.title,
+                                filename: file,
+                                poster: data.poster
+                            };
+                            movieList.push(movie);
+                            io.to(socketId).emit('movie', movie);
+                        }, function(error){
+                            console.log(error);
+                            console.warn('Error with file: ' + filename);
+                        });
+                }else{
+                    //notify invalid extension
+                    //console.warn(fileType + ' is not supported');
+                }
             }
         }
-    }
-    console.log("Number of Movies loaded: " + movieList.length);
-    io.to(socketId).emit('setMovies', movieList);
+    });
+
+    //console.log("Number of Movies loaded: " + movieList.length);
+    //io.to(socketId).emit('setMovies', movieList);
 }
 
 function getTVShowList(socketId){
@@ -243,7 +252,7 @@ function validVideoFileExtension(ex){
     if(ex == null){ return false; }
 
     var s = ex.toLowerCase();
-    if(s == "mkv" || s == "mp4" || s == "avi" || s == "m4v"){
+    if(s == "mkv" || s == "mp4" || s == "flv" || s == "m4v"){
         //console.log("FILE TYPE: " + ex);
         return true;
     }else{
@@ -272,4 +281,15 @@ function readSetupFile(){
             tvShowsFolder = setup.tvShowsFolder;
         });
     }
+}
+
+//Credit: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript?page=1&tab=votes#tab-top
+function uuid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
