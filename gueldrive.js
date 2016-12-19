@@ -34,7 +34,6 @@ app.use('/js', express.static('js'));
 app.use('/Videos', express.static('Videos'));
 
 readSetupFile();
-connect();
 
 // websocket
 io.on('connection', function(socket){
