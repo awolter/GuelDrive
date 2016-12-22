@@ -1,6 +1,6 @@
-/**********************
- **      web.js      **
- **********************/
+/*********************
+ **	  web.js	  	**
+ *********************/
 
 /** Global Variables **/
 
@@ -71,19 +71,19 @@ function switchMovie(uuid){
 	playingTVShow = false;
 	var foundFlag = false;
 
-    movies.forEach(function(movie){
-        if(movie.uuid === uuid){
-            $currentVideo.find('source').attr('src', 'movie/' + movie.filename);
-            $currentVideo.find('source').attr('type', 'video/' + getVideoTypeAttr(movie.filename));
-            $currentVideo[0].load();
-            $currentVideo[0].play();
-            setCurrentVideoMessage(movie.name);
+	movies.forEach(function(movie){
+		if(movie.uuid === uuid){
+			$currentVideo.find('source').attr('src', 'movie/' + movie.filename);
+			$currentVideo.find('source').attr('type', 'video/' + getVideoTypeAttr(movie.filename));
+			$currentVideo[0].load();
+			$currentVideo[0].play();
+			setCurrentVideoMessage(movie.name);
 			foundFlag = true;
-        }
-    });
+		}
+	});
 
-    if(!foundFlag)
-        console.warn('Invalid movie switch attempt!');
+	if(!foundFlag)
+		console.warn('Invalid movie switch attempt!');
 }
 
 
@@ -295,16 +295,16 @@ $(document).ready(function(){
 	});
 
 	socket.on('movie', function(movie){
-        var movieTabList = $('#movieTabList');
-        var tab = "";
+		var movieTabList = $('#movieTabList');
+		var tab = "";
 
-        tab += "<li data-uuid='" + movie.uuid + "'><label for='movieTab' title='" + movie.name + "'>";
-        tab += "<img src='" + movie.poster + "'";
-        tab += "class='videoTab movieTab' draggable='false'/>";
-        tab += "</label></li>";
+		tab += "<li data-uuid='" + movie.uuid + "'><label for='movieTab' title='" + movie.name + "'>";
+		tab += "<img src='" + movie.poster + "'";
+		tab += "class='videoTab movieTab' draggable='false'/>";
+		tab += "</label></li>";
 
-        movieTabList.append(tab);
-        movies.push(movie);
+		movieTabList.append(tab);
+		movies.push(movie);
 	});
 
 	// populate the tv shows list
@@ -320,19 +320,19 @@ $(document).ready(function(){
 		console.log(tvShowList);
 	});
 
-    socket.on('tvShow', function(tvShow){
-    	console.log(tvShow);
-        var tvShowTabList = $('#tvShowTabList');
-        var tab = "";
+	socket.on('tvShow', function(tvShow){
+		console.log(tvShow);
+		var tvShowTabList = $('#tvShowTabList');
+		var tab = "";
 
-        tab += "<li data-uuid='" + tvShow.uuid + "'><label for='tvShowTab' title='" + tvShow.name + "'>";
-        tab += "<img src='" + tvShow.poster + "'";
-        tab += "class='videoTab tvShowTab' draggable='false'/>";
-        tab += "</label></li>";
+		tab += "<li data-uuid='" + tvShow.uuid + "'><label for='tvShowTab' title='" + tvShow.name + "'>";
+		tab += "<img src='" + tvShow.poster + "'";
+		tab += "class='videoTab tvShowTab' draggable='false'/>";
+		tab += "</label></li>";
 
-        tvShowTabList.append(tab);
-        tvShows.push(tvShow);
-    });
+		tvShowTabList.append(tab);
+		tvShows.push(tvShow);
+	});
 
 	// if space is pressed, it pauses/starts the current video
 	$(document).on('keydown',function(e){
@@ -349,7 +349,7 @@ $(document).ready(function(){
 		}
 	});
 
-    $(document).on('click', '.movieTab', function(){
+	$(document).on('click', '.movieTab', function(){
 		var $target = $(this);
 		var element;
 
@@ -361,7 +361,7 @@ $(document).ready(function(){
 			element = $target;
 
 		switchMovie(element.attr('data-uuid'));
-    });
+	});
 
 	// expands the video player to the entire page (not full screen)
 	$expandButton.click(function(){
@@ -443,7 +443,7 @@ function getVideoTypeAttr(filename){
 
 function getFileExtension(file){
 
-    var fileArr = file.split(".");
+	var fileArr = file.split(".");
 
-    return fileArr[fileArr.length-1];
+	return fileArr[fileArr.length-1];
 }
