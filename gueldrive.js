@@ -43,7 +43,7 @@ io.on('connection', function(socket){
     // get the list of movies and send them to the web client(s)
     getMovieList(socket.id);
     // get the list of tv shows and send them to the web client(s)
-    //getTVShowList(socket.id);
+    getTVShowList(socket.id);
 });
 
 // load webpage
@@ -55,6 +55,46 @@ app.get('/', function(req, res){
 
 app.get('/movie/:filename', function(req, res){
     var file = videoDirectory + moviesFolder + req.params.filename;
+
+    fs.stat(file, function(err, stats) {
+        if (err) {
+            if (err.code === 'ENOENT') {
+                // 404 Error if file not found
+                return res.sendStatus(404);
+            }
+            res.end(err);
+        }
+        var range = req.headers.range;
+        if (!range) {
+            // 416 Wrong range
+            return res.sendStatus(416);
+        }
+        var positions = range.replace(/bytes=/, "").split("-");
+        var start = parseInt(positions[0], 10);
+        var total = stats.size;
+        var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+        var chunksize = (end - start) + 1;
+
+        res.writeHead(206, {
+            "Content-Range": "bytes " + start + "-" + end + "/" + total,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunksize,
+            "Content-Type": "video/mp4"
+        });
+
+        var stream = fs.createReadStream(file, { start: start, end: end })
+            .on("open", function() {
+                stream.pipe(res);
+            }).on("error", function(err) {
+                res.end(err);
+            });
+
+    });
+});
+
+//TODO - Duplicate Code
+app.get('/tvShow/:filename', function(req, res){
+    var file = videoDirectory + tvShowsFolder + req.params.filename;
 
     fs.stat(file, function(err, stats) {
         if (err) {
@@ -141,8 +181,6 @@ function getMovieList(socketId){
 }
 
 function getTVShowList(socketId){
-    // counter for number of episodes
-    var count = 0;
     var shows;
     var tvShows = [];
 
@@ -155,66 +193,67 @@ function getTVShowList(socketId){
         console.error(e);
     }
 
-    for(var i in shows){
-        if(shows.hasOwnProperty(i) && shows[i].charAt(0) != "."){ //jQuery check
+    shows.forEach(function(showDirectory){
+        if(showDirectory.charAt(0) !== '.'){
+            console.log(showDirectory);
+            if(showDirectory.charAt(0) != '.'){
+                var show = {
+                    name: showDirectory,
+                    seasons: []
+                };
+                var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + showDirectory + "/");
 
-            // add show to list
-            var show = {
-                "name" : shows[i],
-                "imageType" : "default"
-            };
-            show.seasons = [];
-
-            // iterate through the seasons
-            //noinspection JSUnresolvedFunction
-            var seasons = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/"); //TODO - Surround in try/catch
-            console.log(seasons);
-            for(var j in seasons) {
-                if (seasons.hasOwnProperty(j) && seasons[j].charAt(0) != ".") { //jQuery check
-
-                    // make sure it is not the cover image
-                    if(removeFileExtension(seasons[j]) != "cover") {
-
-                        // add season to seasons list
+                seasons.forEach(function(seasonDirectory){
+                    if(seasonDirectory.charAt(0) !== '.'){
                         var season = {
-                            "name": seasons[j]
+                            name: seasonDirectory,
+                            episodes: []
                         };
-                        season.episodes = [];
 
-                        // iterate through the episodes
-                        //noinspection JSUnresolvedFunction
-                        var episodes = fs.readdirSync(videoDirectory + tvShowsFolder + shows[i] + "/" + seasons[j] + "/");
-                        for (var k in episodes) {
-                            //console.log(i + j + k);
-                            if (episodes.hasOwnProperty(k) && episodes[k].charAt(0) != ".") { //jQuery check
-                                // check that the file is of valid type
-                                //console.log(i + j + k);
-                                if (validVideoFileExtension(getFileExtension(episodes[k]))) {
+                        var episodes = fs.readdirSync(videoDirectory + tvShowsFolder + showDirectory + "/" + seasonDirectory + "/");
+
+                        episodes.forEach(function(episodeFile){
+                            if(episodeFile.indexOf('.') > -1 && !(episodeFile.indexOf('.avi') > -1) && episodeFile.charAt(0) !== '.'){
+                                if(validVideoFileExtension(getFileExtension(episodeFile))) {
                                     //console.log(i + j + k);
                                     // add episode to episodes list
                                     var episode = {
-                                        "name": removeFileExtension(episodes[k]),
-                                        "fileType": getFileExtension(episodes[k])
+                                        name: removeFileExtension(episodeFile),
+                                        filename: episodeFile
                                     };
-                                    count++;
                                     season.episodes.push(episode);
                                 }
                             }
-                        }
+                        });
                         show.seasons.push(season);
+                        console.log(season.episodes);
                     }
-                    // set cover image type
-                    else{
-                        show.imageType = "." + getFileExtension(seasons[j]);
-                    }
-                }
+                });
+                //console.log('-----------------');
+                //console.log(show);
+                imdb.get(show.name)
+                    .then(function(data){
+                        //console.log(data);
+                        show.uuid = uuid();
+                        show.poster = data.poster;
+                        // data.episodes().then(function(moreData){
+                        //     console.log(moreData);
+                        // });
+                        // movie = {
+                        //     uuid: uuid(),
+                        //     name: data.title,
+                        //     filename: file,
+                        //     poster: data.poster
+                        // };
+                        tvShows.push(show);
+                        io.to(socketId).emit('tvShow', show);
+                    }, function(error){
+                        console.log(error);
+                        console.warn('Error with show: ' + show);
+                    });
             }
-            tvShows.push(show);
         }
-    }
-    //console.log(JSON.stringify(tvShows,null,2));
-    console.log("Number of TV Show episodes loaded: " + count);
-    io.to(socketId).emit('setTVShows', tvShows);
+    });
 }
 
 // parses the file extension from a full file name

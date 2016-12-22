@@ -320,6 +320,20 @@ $(document).ready(function(){
 		console.log(tvShowList);
 	});
 
+    socket.on('tvShow', function(tvShow){
+    	console.log(tvShow);
+        var tvShowTabList = $('#tvShowTabList');
+        var tab = "";
+
+        tab += "<li data-uuid='" + tvShow.uuid + "'><label for='tvShowTab' title='" + tvShow.name + "'>";
+        tab += "<img src='" + tvShow.poster + "'";
+        tab += "class='videoTab tvShowTab' draggable='false'/>";
+        tab += "</label></li>";
+
+        tvShowTabList.append(tab);
+        tvShows.push(tvShow);
+    });
+
 	// if space is pressed, it pauses/starts the current video
 	$(document).on('keydown',function(e){
 		var target = $(e.target);
