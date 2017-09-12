@@ -2,7 +2,7 @@
 
 Home media streaming application using Node.js.
 
-##Required
+## Required
 A directory `setup` in the same directory as `gueldrive.js` with a file `setup.json` similar to the following:
 ```$xslt
 {
