@@ -1,13 +1,9 @@
 {
   "name": "gueldrive",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Node.js home media server",
-  "main": "gueldrive.js",
-  "dependencies": {
-    "express": "^4.14.0",
-    "imdb-api": "^2.2.0",
-    "socket.io": "^1.7.2"
-  },
+  "main": "app.js",
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/awolter/GuelDrive.git"
