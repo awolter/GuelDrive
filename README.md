@@ -22,4 +22,4 @@ A directory `setup` in the same directory as `gueldrive.js` with a file `setup.j
 
 ## License
 
-GuelDrive is available under the MIT license, included in LICENSE.txt. 
+GuelDrive is available under the MIT license, included in LICENSE.txt.
